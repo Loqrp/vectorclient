@@ -6463,7 +6463,6 @@ targetinfoobj = mainapi:CreateOverlay({
 			task.spawn(function()
 				repeat
 					local target = targetinfo:UpdateInfo()
-					targetinfo:UpdateInfo()
 					if target ~= nil and targetinfofollow and targetinfofollow.Enabled then
 						local vec, screen = workspace.CurrentCamera:WorldToScreenPoint(target.Position)
 						if screen then
