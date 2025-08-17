@@ -5931,7 +5931,7 @@ general:CreateButton({
 	Function = function()
 		shared.vapereload = true
 		if shared.VapeDeveloper then
-			loadstring(readfile('vectorclient/main.lua'), 'loader')()
+			loadstring(readfile('vectorclient/loader.lua'), 'loader')()
 		else
 			loadstring(game:HttpGet('https://raw.githubusercontent.com/Loqrp/vectorclient/'..readfile('vectorclient/profiles/commit.txt')..'/loader.lua', true))()
 		end
