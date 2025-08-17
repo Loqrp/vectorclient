@@ -57,3 +57,6 @@ if not shared.VapeDeveloper then
 end
 
 return loadstring(downloadFile('vectorclient/main.lua'), 'main')()
+return loadstring(downloadFile('vectorclient/assets/new/hit1.ogg'))()
+return loadstring(downloadFile('vectorclient/assets/new/hit2.ogg'))()
+return loadstring(downloadFile('vectorclient/assets/new/hit3.ogg'))()
