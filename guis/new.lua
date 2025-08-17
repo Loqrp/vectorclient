@@ -6462,14 +6462,14 @@ targetinfoobj = mainapi:CreateOverlay({
 		if callback then
 			task.spawn(function()
 				repeat
-					targetinfo:UpdateInfo()
 					local target = targetinfo:UpdateInfo()
-						if target ~= nil and targetinfofollow and targetinfofollow.Enabled then
-							local vec, screen = workspace.CurrentCamera:WorldToScreenPoint(target.Position)
-							if screen then
-								targetinfobkg.Parent.Parent.Position = UDim2.fromOffset(vec.X, vec.Y)
-							end
+					targetinfo:UpdateInfo()
+					if target ~= nil and targetinfofollow and targetinfofollow.Enabled then
+						local vec, screen = workspace.CurrentCamera:WorldToScreenPoint(target.Position)
+						if screen then
+							targetinfobkg.Parent.Parent.Position = UDim2.fromOffset(vec.X, vec.Y)
 						end
+					end
 					task.wait()
 				until not targetinfoobj.Button or not targetinfoobj.Button.Enabled
 			end)
