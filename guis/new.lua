@@ -6451,6 +6451,7 @@ VapeLabelSorter.Parent = VapeLabelHolder
 local targetinfo
 local targetinfoobj
 local targetinfobcolor
+local targetinfofollow
 targetinfoobj = mainapi:CreateOverlay({
 	Name = 'Target Info',
 	Icon = getcustomasset('vectorclient/assets/new/targetinfoicon.png'),
@@ -6462,6 +6463,12 @@ targetinfoobj = mainapi:CreateOverlay({
 			task.spawn(function()
 				repeat
 					targetinfo:UpdateInfo()
+						if target ~= nil and targetinfofollow and targetinfofollow.Enabled then
+							local vec, screen = workspace.CurrentCamera:WorldToScreenPoint(target.Position)
+							if screen then
+								targetinfobkg.Parent.Parent.Position = UDim2.fromOffset(vec.X, vec.Y)
+							end
+						end
 					task.wait()
 				until not targetinfoobj.Button or not targetinfoobj.Button.Enabled
 			end)
@@ -6635,6 +6642,11 @@ targetinfobcolor = targetinfoobj:CreateColorSlider({
 	end,
 	Darker = true,
 	Visible = false
+})
+
+targetinfofollow = targetinfoobj:CreateToggle({
+	Name = 'Follow Player',
+	Function = function() end
 })
 
 local lasthealth = 0
