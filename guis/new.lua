@@ -122,9 +122,9 @@ local getcustomassets = {
 	['vectorclient/assets/new/vape.png'] = 'rbxassetid://14373395239',
 	['vectorclient/assets/new/warning.png'] = 'rbxassetid://14368361552',
 	['vectorclient/assets/new/worldicon.png'] = 'rbxassetid://14368362492',
-	['vectorclient/assets/new/hit1.ogg'] = '',
-	['vectorclient/assets/new/hit2.ogg'] = '',
-	['vectorclient/assets/new/hit3.ogg'] = ''
+	['vectorclient/assets/new/hit1.ogg'] = 'https://raw.githubusercontent.com/Loqrp/vectorclient/main/hit1.ogg',
+	['vectorclient/assets/new/hit2.ogg'] = 'https://raw.githubusercontent.com/Loqrp/vectorclient/main/hit2.ogg',
+	['vectorclient/assets/new/hit3.ogg'] = 'https://raw.githubusercontent.com/Loqrp/vectorclient/main/hit3.ogg'
 }
 
 local isfile = isfile or function(file)
