@@ -8188,7 +8188,7 @@ run(function()
 		Function = function()
 			table.clear(soundlist)
 			for _, entry in List.ListEnabled do
-				local split = entry:split('/')
+				local split = entry:split(']')
 				local id = bedwars.SoundList[split[1]]
 				if id and #split > 1 then
 					soundlist[id] = split[2]:find('rbxasset') and split[2] or isfile(split[2]) and assetfunction(split[2]) or ''
