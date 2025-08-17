@@ -6469,7 +6469,7 @@ targetinfoobj = mainapi:CreateOverlay({
 								targetinfobkg.Parent.Parent.Position = UDim2.fromOffset(vec.X, vec.Y)
 							end
 						end
-					end)
+					end
 					task.wait()
 				until not targetinfoobj.Button or not targetinfoobj.Button.Enabled
 			end)
