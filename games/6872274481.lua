@@ -1682,7 +1682,7 @@ run(function()
                 end
             end
         end,
-        Tooltip = "👋"
+        Tooltip = "👋📎."
     })
 
 end)
