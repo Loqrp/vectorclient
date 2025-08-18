@@ -1915,7 +1915,6 @@ run(function()
 					end
 				end
 			end,
-		end,
 		ExtraText = function()
 			return 'Heatseeker'
 		end,
