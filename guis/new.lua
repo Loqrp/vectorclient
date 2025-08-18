@@ -6303,6 +6303,7 @@ local textguibox
 local textguifontcustom
 local textguicolorcustomtoggle
 local textguicolorcustom
+local textguiline
 local textguitext = textgui:CreateToggle({
 	Name = 'Add custom text',
 	Function = function(enabled)
@@ -6346,6 +6347,15 @@ textguicolorcustom = textgui:CreateColorSlider({
 	end,
 	Darker = true,
 	Visible = false
+})
+textguiline = textgui:CreateToggle({
+	Name = 'Line',
+	Function = function(enabled)
+		if holdercolorline then
+			holdercolorline.Visible = enabled
+		end
+		mainapi:UpdateTextGUI()
+	end
 })
 
 
