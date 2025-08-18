@@ -1805,10 +1805,6 @@ run(function()
 	local WallCheck
 	local PopBalloons
 	local TP
-	local FlyAnywayProgressBar = {Enabled = false}
-	local FlyAnywayProgressBarFrame
-	local lastonground = false
-	local groundtime = 0
 	local onground = true
 	local rayCheck = RaycastParams.new()
 	rayCheck.RespectCanCollide = true
