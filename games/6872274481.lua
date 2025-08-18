@@ -1813,9 +1813,11 @@ run(function()
 	local rayCheck = RaycastParams.new()
 	rayCheck.RespectCanCollide = true
 	local up, down, old = 0, 0
-    local lastonground = false
-    local groundtime = 0
-    local onground = true
+	local timerTextLabel
+	local lastonground = false
+	local groundtime = 0
+	local onground = true
+	
 
 
 	Fly = vape.Categories.Blatant:CreateModule({
@@ -1836,41 +1838,35 @@ run(function()
 						bedwars.BalloonController:inflateBalloon()
 					end
 				end))
-				                Fly:Clean(runService.Heartbeat:Connect(function(delta)
-                    if entitylib.isAlive then
-                        local flyAllowed = ((lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2) and 1 or 0
-
-                        if FlyAnywayProgressBarFrame then
-                            FlyAnywayProgressBarFrame.BackgroundColor3 = Color3.fromHSV(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
-                        end
-
-                        if flyAllowed <= 0 then
-                            local block, pos = getPlacedBlock(entitylib.character.HumanoidRootPart.Position + Vector3.new(0, (entitylib.character.Humanoid.HipHeight * -2) - 1, 0))
-                            onground = block ~= nil
-
-                            if lastonground ~= onground then
-                                if (not onground) then
-                                    groundtime = tick() + 2.6
-                                end
-                                lastonground = onground
-                            end
-
-                            if FlyAnywayProgressBarFrame then
-                                FlyAnywayProgressBarFrame.Visible = Fly.Enabled
-                                if groundtime ~= nil then
-                                    local remainingTime = math.max(onground and 2.5 or math.floor((groundtime - tick()) * 10) / 10, 0)
-                                    FlyAnywayProgressBarFrame.TextLabel.Text = remainingTime .. "s"
-                                end
-                            end
-                        else
-                            onground = true
-                            lastonground = true
-                            if FlyAnywayProgressBarFrame then
-                                FlyAnywayProgressBarFrame.Visible = true
-                            end
-                        end
-                    end
-                end))
+				Fly:Clean(runService.Heartbeat:Connect(function(delta)
+					if entitylib.isAlive then
+						local flyAllowed = ((lplr.Character:GetAttribute("InflatedBalloons") and lplr.Character:GetAttribute("InflatedBalloons") > 0) or store.matchState == 2) and 1 or 0
+						if flyAllowed <= 0 then
+							local block, pos = getPlacedBlock(entitylib.character.HumanoidRootPart.Position + Vector3.new(0, (entitylib.character.Humanoid.HipHeight * -2) - 1, 0))
+							onground = block ~= nil
+							if lastonground ~= onground then
+								if (not onground) then
+									groundtime = tick() + 2.6
+								end
+								lastonground = onground
+							end
+							if timerTextLabel then
+								timerTextLabel.Visible = true
+								if groundtime ~= nil then
+									local remainingTime = math.max(onground and 2.5 or math.floor((groundtime - tick()) * 10) / 10, 0)
+									timerTextLabel.Text = remainingTime .. "s"
+								end
+							end
+						else
+							onground = true
+							lastonground = true
+							if timerTextLabel then
+								timerTextLabel.Visible = true
+								timerTextLabel.Text = "2.5s"
+							end
+						end
+					end
+				end))
 				Fly:Clean(runService.PreSimulation:Connect(function(dt)
 					if entitylib.isAlive and not InfiniteFly.Enabled and isnetworkowner(entitylib.character.RootPart) then
 						local flyAllowed = (lplr.Character:GetAttribute('InflatedBalloons') and lplr.Character:GetAttribute('InflatedBalloons') > 0) or store.matchState == 2
@@ -1951,6 +1947,8 @@ run(function()
 						bedwars.BalloonController:deflateBalloon()
 					end
 				end
+		        lastonground = false
+        		if timerTextLabel then timerTextLabel:Destroy() timerTextLabel = nil end
 			end
 		end,
 		ExtraText = function()
@@ -1989,43 +1987,34 @@ run(function()
 		Default = true
 	})
 	FlyAnywayProgressBar = Fly:CreateToggle({
-    Name = "Timer",
-    Function = function(callback)
+		Name = "Timer Text",
 		Function = function(callback)
 			if callback then
-				FlyAnywayProgressBarFrame = Instance.new("Frame")
-				FlyAnywayProgressBarFrame.Name = "FlyAnywayProgressBar"
-				FlyAnywayProgressBarFrame.AnchorPoint = Vector2.new(0.5, 0)
-				FlyAnywayProgressBarFrame.Position = UDim2.new(0.5, 0, 1, -200)
-				FlyAnywayProgressBarFrame.Size = UDim2.new(0.2, 0, 0, 20)
-				FlyAnywayProgressBarFrame.BackgroundTransparency = 1 
-				FlyAnywayProgressBarFrame.BorderSizePixel = 0
-				FlyAnywayProgressBarFrame.Visible = Fly.Enabled
-				FlyAnywayProgressBarFrame.Parent = vape.gui
-
-				local textLabel = Instance.new("TextLabel")
-				textLabel.Name = "TextLabel"
-				textLabel.Text = "2.5s"
-				textLabel.Font = Enum.Font.Gotham
-				textLabel.TextStrokeTransparency = 0
-				textLabel.TextColor3 = Color3.new(0.9, 0.9, 0.9)
-				textLabel.TextSize = 20
-				textLabel.Size = UDim2.new(1, 0, 1, 0)
-				textLabel.BackgroundTransparency = 1 
-				textLabel.Position = UDim2.new(0, 0, -1, 0) 
-				textLabel.Parent = FlyAnywayProgressBarFrame
-
+				local timerGui = Instance.new("ScreenGui")
+				timerGui.Name = "VapeFlyTimer"
+				timerGui.ResetOnSpawn = false
+				timerGui.Parent = vape.gui
+				timerTextLabel = Instance.new("TextLabel")
+				timerTextLabel.Name = "Timer"
+				timerTextLabel.Text = "2.5s"
+				timerTextLabel.Font = Enum.Font.Gotham
+				timerTextLabel.TextSize = 20
+				timerTextLabel.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+				timerTextLabel.TextStrokeTransparency = 0
+				timerTextLabel.BackgroundTransparency = 1
+				timerTextLabel.Size = UDim2.new(0, 100, 0, 30)
+				timerTextLabel.Position = UDim2.new(0.5, -50, 1, -200)
+				timerTextLabel.AnchorPoint = Vector2.new(0.5, 0)
+				timerTextLabel.Parent = timerGui
 			else
-
-				if FlyAnywayProgressBarFrame then
-					FlyAnywayProgressBarFrame:Destroy()
-					FlyAnywayProgressBarFrame = nil
+				if timerTextLabel and timerTextLabel.Parent and timerTextLabel.Parent.Parent then
+					timerTextLabel.Parent.Parent:Destroy()
 				end
+				timerTextLabel = nil
 			end
 		end,
-    end,
-    Tooltip = "show amount of Fly time",
-    Default = true
+		Default = true,
+		Tooltip = "Show flight time countdown"
 	})
 end)
 	
