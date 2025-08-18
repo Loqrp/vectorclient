@@ -6453,6 +6453,9 @@ VapeLabelSorter.Parent = VapeLabelHolder
 local targetinfo
 local targetinfoobj
 local targetinfobcolor
+local targethudmode = "Vape" -- Default mode
+local targetinfofollow
+
 targetinfoobj = mainapi:CreateOverlay({
 	Name = 'Target Info',
 	Icon = getcustomasset('vectorclient/assets/new/targetinfoicon.png'),
@@ -6463,7 +6466,17 @@ targetinfoobj = mainapi:CreateOverlay({
 		if callback then
 			task.spawn(function()
 				repeat
-					targetinfo:UpdateInfo()
+					local target = targetinfo:UpdateInfo()
+					if target ~= nil and targetinfofollow and targetinfofollow.Enabled then
+						local vec, screen = workspace.CurrentCamera:WorldToScreenPoint(target.Position)
+						if screen then
+							if targethudmode == "Vector" then
+								vectorTargetHud.Position = UDim2.fromOffset(vec.X - 108, vec.Y - 44) -- Center the GUI
+							else
+								targetinfobkg.Parent.Parent.Position = UDim2.fromOffset(vec.X, vec.Y)
+							end
+						end
+					end
 					task.wait()
 				until not targetinfoobj.Button or not targetinfoobj.Button.Enabled
 			end)
@@ -6471,6 +6484,101 @@ targetinfoobj = mainapi:CreateOverlay({
 	end
 })
 
+-- Mode selector
+local targethudmodeobj = targetinfoobj:CreateDropdown({
+	Name = 'Mode',
+	Options = {'Vape', 'Vector'},
+	Function = function(val)
+		targethudmode = val
+		-- Toggle visibility based on mode
+		if targetinfobkg then
+			targetinfobkg.Visible = (val == "Vape")
+		end
+		if vectorTargetHud then
+			vectorTargetHud.Visible = (val == "Vector")
+		end
+	end,
+	Default = 'Vape'
+})
+
+-- Vector Target HUD (your GUI)
+local vectorTargetHud = Instance.new("Frame")
+vectorTargetHud.Name = "VectorTargetHud"
+vectorTargetHud.Size = UDim2.new(0, 216, 0, 89)
+vectorTargetHud.BackgroundColor3 = Color3.fromRGB(25, 25, 57)
+vectorTargetHud.BorderSizePixel = 0
+vectorTargetHud.Visible = false -- Hidden by default since Vape is default
+vectorTargetHud.Parent = targetinfoobj.Children
+
+-- Add corners and strokes
+local vectorUICorner = Instance.new("UICorner", vectorTargetHud)
+
+local vectorUIStroke = Instance.new("UIStroke", vectorTargetHud)
+vectorUIStroke.Thickness = 2
+vectorUIStroke.Color = Color3.fromRGB(55, 55, 73)
+
+-- Player image
+local vectorPlayerImage = Instance.new("ImageLabel", vectorTargetHud)
+vectorPlayerImage.Name = "Player"
+vectorPlayerImage.Size = UDim2.new(0, 60, 0, 60)
+vectorPlayerImage.Position = UDim2.new(0.04167, 0, 0.1573, 0)
+vectorPlayerImage.BackgroundTransparency = 1
+vectorPlayerImage.BorderSizePixel = 0
+-- Use a default image or placeholder
+vectorPlayerImage.Image = "rbxthumb://type=AvatarHeadShot&id=1&w=420&h=420"
+
+-- Username label
+local vectorUsername = Instance.new("TextLabel", vectorTargetHud)
+vectorUsername.Name = "Username"
+vectorUsername.Size = UDim2.new(0, 129, 0, 33)
+vectorUsername.Position = UDim2.new(0.35185, 0, 0.1573, 0)
+vectorUsername.BackgroundTransparency = 1
+vectorUsername.BorderSizePixel = 0
+vectorUsername.Text = "Target"
+vectorUsername.TextXAlignment = Enum.TextXAlignment.Left
+vectorUsername.TextScaled = true
+vectorUsername.TextColor3 = Color3.fromRGB(255, 255, 255)
+vectorUsername.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+vectorUsername.TextStrokeTransparency = 0
+
+-- Health bar
+local vectorHpFrame = Instance.new("Frame", vectorTargetHud)
+vectorHpFrame.Name = "Hp"
+vectorHpFrame.Size = UDim2.new(0, 129, 0, 15)
+vectorHpFrame.Position = UDim2.new(0.35185, 0, 0.61798, 0)
+vectorHpFrame.BackgroundColor3 = Color3.fromRGB(0, 255, 18)
+vectorHpFrame.BorderSizePixel = 0
+
+local vectorHpCorner = Instance.new("UICorner", vectorHpFrame)
+
+local vectorHpStroke = Instance.new("UIStroke", vectorHpFrame)
+vectorHpStroke.Thickness = 2
+vectorHpStroke.Color = Color3.fromRGB(65, 65, 81)
+
+-- Shadow holder
+local vectorShadowHolder = Instance.new("Frame", vectorTargetHud)
+vectorShadowHolder.Name = "shadowHolder"
+vectorShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+vectorShadowHolder.BackgroundTransparency = 1
+vectorShadowHolder.ZIndex = 0
+
+-- Shadows (simplified)
+for i, name in ipairs({"umbraShadow", "penumbraShadow", "ambientShadow"}) do
+	local shadow = Instance.new("ImageLabel", vectorShadowHolder)
+	shadow.Name = name
+	shadow.Size = UDim2.new(1, 10, 1, 10)
+	shadow.Position = UDim2.new(0.5, 0, 0.5, 6)
+	shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+	shadow.BackgroundTransparency = 1
+	shadow.ZIndex = 0
+	shadow.Image = "rbxassetid://1316045217" -- Standard shadow asset
+	shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+	shadow.ImageTransparency = 0.86 + (i * 0.01)
+	shadow.ScaleType = Enum.ScaleType.Slice
+	shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+end
+
+-- Vape Target HUD (your existing code)
 local targetinfobkg = Instance.new('Frame')
 targetinfobkg.Size = UDim2.fromOffset(240, 89)
 targetinfobkg.BackgroundColor3 = color.Dark(uipallet.Main, 0.1)
@@ -6639,6 +6747,11 @@ targetinfobcolor = targetinfoobj:CreateColorSlider({
 	Visible = false
 })
 
+-- Follow toggle
+targetinfofollow = targetinfoobj:CreateToggle({
+	Name = 'Follow Target',
+	Default = true
+})
 
 local lasthealth = 0
 local lastmaxhealth = 0
@@ -6663,33 +6776,60 @@ targetinfo = {
 			end
 		end
 
-		targetinfobkg.Visible = v ~= nil or mainapi.gui.ScaledGui.ClickGui.Visible
+		-- Update both HUDs visibility
+		local showHud = v ~= nil or mainapi.gui.ScaledGui.ClickGui.Visible
+		targetinfobkg.Visible = showHud and targethudmode == "Vape"
+		vectorTargetHud.Visible = showHud and targethudmode == "Vector"
+
 		if v then
-			targetinfoname.Text = v.Player and (targetinfodisplay.Enabled and v.Player.DisplayName or v.Player.Name) or v.Character and v.Character.Name or targetinfoname.Text
-			targetinfoshot.Image = 'rbxthumb://type=AvatarHeadShot&id='..(v.Player and v.Player.UserId or 1)..'&w=420&h=420'
+			-- Update Vape HUD
+			if targethudmode == "Vape" then
+				targetinfoname.Text = v.Player and (targetinfodisplay.Enabled and v.Player.DisplayName or v.Player.Name) or v.Character and v.Character.Name or targetinfoname.Text
+				targetinfoshot.Image = 'rbxthumb://type=AvatarHeadShot&id='..(v.Player and v.Player.UserId or 1)..'&w=420&h=420'
 
-			if not v.Character then
-				v.Health = v.Health or 0
-				v.MaxHealth = v.MaxHealth or 100
-			end
-
-			if v.Health ~= lasthealth or v.MaxHealth ~= lastmaxhealth then
-				local percent = math.max(v.Health / v.MaxHealth, 0)
-				tween:Tween(targetinfohealth, TweenInfo.new(0.3), {
-					Size = UDim2.fromScale(math.min(percent, 1), 1), BackgroundColor3 = Color3.fromHSV(math.clamp(percent / 2.5, 0, 1), 0.89, 0.75)
-				})
-				tween:Tween(targetinfohealthextra, TweenInfo.new(0.3), {
-					Size = UDim2.fromScale(math.clamp(percent - 1, 0, 0.8), 1)
-				})
-				if lasthealth > v.Health and self.LastTarget == v then
-					tween:Cancel(targetinfoshotflash)
-					targetinfoshotflash.BackgroundTransparency = 0.3
-					tween:Tween(targetinfoshotflash, TweenInfo.new(0.5), {
-						BackgroundTransparency = 1
-					})
+				if not v.Character then
+					v.Health = v.Health or 0
+					v.MaxHealth = v.MaxHealth or 100
 				end
-				lasthealth = v.Health
-				lastmaxhealth = v.MaxHealth
+
+				if v.Health ~= lasthealth or v.MaxHealth ~= lastmaxhealth then
+					local percent = math.max(v.Health / v.MaxHealth, 0)
+					tween:Tween(targetinfohealth, TweenInfo.new(0.3), {
+						Size = UDim2.fromScale(math.min(percent, 1), 1), BackgroundColor3 = Color3.fromHSV(math.clamp(percent / 2.5, 0, 1), 0.89, 0.75)
+					})
+					tween:Tween(targetinfohealthextra, TweenInfo.new(0.3), {
+						Size = UDim2.fromScale(math.clamp(percent - 1, 0, 0.8), 1)
+					})
+					if lasthealth > v.Health and self.LastTarget == v then
+						tween:Cancel(targetinfoshotflash)
+						targetinfoshotflash.BackgroundTransparency = 0.3
+						tween:Tween(targetinfoshotflash, TweenInfo.new(0.5), {
+							BackgroundTransparency = 1
+						})
+					end
+					lasthealth = v.Health
+					lastmaxhealth = v.MaxHealth
+				end
+			else
+				-- Update Vector HUD
+				vectorUsername.Text = v.Player and (targetinfodisplay.Enabled and v.Player.DisplayName or v.Player.Name) or v.Character and v.Character.Name or vectorUsername.Text
+				vectorPlayerImage.Image = 'rbxthumb://type=AvatarHeadShot&id='..(v.Player and v.Player.UserId or 1)..'&w=420&h=420'
+
+				if not v.Character then
+					v.Health = v.Health or 0
+					v.MaxHealth = v.MaxHealth or 100
+				end
+
+				if v.Health ~= lasthealth or v.MaxHealth ~= lastmaxhealth then
+					local percent = math.max(v.Health / v.MaxHealth, 0)
+					-- Update Vector health bar
+					tween:Tween(vectorHpFrame, TweenInfo.new(0.3), {
+						Size = UDim2.new(0, math.floor(129 * math.min(percent, 1)), 0, 15),
+						BackgroundColor3 = Color3.fromHSV(math.clamp(percent / 2.5, 0, 1), 0.89, 0.75)
+					})
+					lasthealth = v.Health
+					lastmaxhealth = v.MaxHealth
+				end
 			end
 
 			if not v.Character then table.clear(v) end
@@ -6699,7 +6839,6 @@ targetinfo = {
 	end
 }
 mainapi.Libraries.targetinfo = targetinfo
-
 function mainapi:UpdateTextGUI(afterload)
 	if not afterload and not mainapi.Loaded then return end
 	if textgui.Button.Enabled then

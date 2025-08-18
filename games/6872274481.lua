@@ -2299,9 +2299,6 @@ run(function()
 				end
 			end
 		end,
-		ExtraText = function()
-			return 'yo'
-		end,
 		Tooltip = 'Attack players around you\nwithout aiming at them.'
 	})
 	Targets = Killaura:CreateTargets({
