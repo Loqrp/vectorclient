@@ -1948,8 +1948,7 @@ run(function()
 					end
 				end
 		        lastonground = false
-        		if timerTextLabel then timerTextLabel.Visible = false
-				timerTextLabel = nil end
+        		if timerTextLabel then timerTextLabel.Visible = false() timerTextLabel = nil end
 			end
 		end,
 		ExtraText = function()
@@ -1990,29 +1989,35 @@ run(function()
 	FlyAnywayProgressBar = Fly:CreateToggle({
 		Name = "Timer Text",
 		Function = function(callback)
-			if callback then
-				local timerGui = Instance.new("ScreenGui")
-				timerGui.Name = "VapeFlyTimer"
-				timerGui.ResetOnSpawn = false
-				timerGui.Parent = vape.gui
-				timerTextLabel = Instance.new("TextLabel")
-				timerTextLabel.Name = "Timer"
-				timerTextLabel.Text = "2.5s"
-				timerTextLabel.Font = Enum.Font.Gotham
-				timerTextLabel.TextSize = 20
-				timerTextLabel.TextColor3 = Color3.new(0.9, 0.9, 0.9)
-				timerTextLabel.TextStrokeTransparency = 0
-				timerTextLabel.BackgroundTransparency = 1
-				timerTextLabel.Size = UDim2.new(0, 100, 0, 30)
-				timerTextLabel.Position = UDim2.new(0.5, -50, 1, -200)
-				timerTextLabel.AnchorPoint = Vector2.new(0.5, 0)
-				timerTextLabel.Parent = timerGui
-			else
-				if timerTextLabel and timerTextLabel.Parent and timerTextLabel.Parent.Parent then
-					timerTextLabel.Parent.Parent:Destroy()
-				end
-				timerTextLabel = nil
-			end
+        Function = function(callback)
+            if callback then
+                if not timerTextLabel then
+                    local timerGui = Instance.new("ScreenGui")
+                    timerGui.Name = "jdgsfhjkdgsfkjhgkhjgfdhjkgskjhdfhkgjdfjkhsdgfhjkdgfjkh"
+                    timerGui.ResetOnSpawn = false
+                    timerGui.Parent = vape.gui
+
+                    timerTextLabel = Instance.new("TextLabel")
+                    timerTextLabel.Name = "Timer"
+                    timerTextLabel.Text = "2.5s"
+                    timerTextLabel.Font = Enum.Font.Gotham
+                    timerTextLabel.TextSize = 20
+                    timerTextLabel.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+                    timerTextLabel.TextStrokeTransparency = 0
+                    timerTextLabel.BackgroundTransparency = 1
+                    timerTextLabel.Size = UDim2.new(0, 100, 0, 30)
+                    timerTextLabel.Position = UDim2.new(0.5, -50, 1, -200)
+                    timerTextLabel.AnchorPoint = Vector2.new(0.5, 0)
+                    timerTextLabel.Parent = timerGui
+                end
+                if timerTextLabel then
+                    timerTextLabel.Visible = true
+                end
+            else
+                if timerTextLabel then
+                    timerTextLabel.Visible = false
+                end
+            end
 		end,
 		Default = true,
 		Tooltip = "Show flight time countdown"
