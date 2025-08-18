@@ -1571,40 +1571,14 @@ run(function()
 end)
 	
 run(function()
-    local TexturePack
+    local TexturePacks = {["Enabled"] = false}
+    local toolFunction = function() end
     local con
     local importModel
     local indexTable
 
-    local function toolFunction(tool)
-        if tool:IsA("Tool") and importModel then
-            for _, itemData in ipairs(indexTable) do
-                if tool.Name:lower() == itemData.name then
-                    local modelClone = itemData.model:Clone()
-                    modelClone.CFrame = tool.Handle.CFrame * itemData.offset
-                    modelClone.Parent = tool
-
-                    local weldConstraint = Instance.new("WeldConstraint")
-                    weldConstraint.Part0 = modelClone
-                    weldConstraint.Part1 = tool.Handle
-                    weldConstraint.Parent = modelClone
-                    break
-                end
-            end
-        end
-    end
-
-    local function applyToAllTools()
-        local camera = workspace:FindFirstChild("Camera")
-        if camera and camera:FindFirstChild("Viewmodel") then
-            for _, tool in pairs(camera.Viewmodel:GetChildren()) do
-                pcall(toolFunction, tool)
-            end
-        end
-    end
-
     local function loadFirstPack()
-        pcall(function() importModel:Destroy() end)
+        pcall(function() if importModel then importModel:Destroy() end end)
         importModel = nil
         indexTable = nil
 
@@ -1652,19 +1626,62 @@ run(function()
         }
     end
 
-    TexturePack = vape.Categories.Render:CreateModule({
-        Name = "TexturePack",
+    local function processTool(tool)
+        if tool:IsA("Tool") and importModel and indexTable then
+            for _, itemData in ipairs(indexTable) do
+                if tool.Name:lower() == itemData.name then
+                    local modelClone = itemData.model:Clone()
+                    modelClone.CFrame = tool.Handle.CFrame * itemData.offset
+                    modelClone.Parent = tool
+
+                    local weldConstraint = Instance.new("WeldConstraint")
+                    weldConstraint.Part0 = modelClone
+                    weldConstraint.Part1 = tool.Handle
+                    weldConstraint.Parent = modelClone
+                    break
+                end
+            end
+        end
+    end
+
+    local function applyToAllTools()
+        local camera = workspace:FindFirstChild("Camera")
+        if camera and camera:FindFirstChild("Viewmodel") then
+            for _, tool in pairs(camera.Viewmodel:GetChildren()) do
+                pcall(processTool, tool)
+            end
+        end
+    end
+
+    local function refresh()
+        pcall(function() if con then con:Disconnect() end end)
+        local camera = workspace:FindFirstChild("Camera")
+        if camera and camera:FindFirstChild("Viewmodel") then
+            con = camera.Viewmodel.ChildAdded:Connect(processTool)
+        else
+            con = nil
+        end
+        applyToAllTools()
+    end
+
+    TexturePacks = vape.Categories.Render:CreateModule({
+        Name = "TexturePacksV3",
         Function = function(callback)
             if callback then
+                TexturePacks.Enabled = true
+                toolFunction = processTool
                 loadFirstPack()
-                pcall(function() con:Disconnect() end)
-                local camera = workspace:FindFirstChild("Camera")
-                con = camera and camera:FindFirstChild("Viewmodel") and camera.Viewmodel.ChildAdded:Connect(toolFunction) or nil
-                applyToAllTools()
+                refresh()
             else
-                pcall(function() con:Disconnect() end)
+                TexturePacks.Enabled = false
+                toolFunction = function() end
+                pcall(function() if con then con:Disconnect() end end)
                 con = nil
-                pcall(function() importModel:Destroy() end)
+                pcall(function()
+                    if importModel then
+                        importModel:Destroy()
+                    end
+                end)
                 importModel = nil
                 indexTable = nil
 
@@ -1674,7 +1691,7 @@ run(function()
                         if tool:IsA("Tool") then
                             for _, child in pairs(tool:GetChildren()) do
                                 if child:IsA("Model") and child.Name ~= "Handle" then
-                                    child:Destroy()
+                                    pcall(function() child:Destroy() end)
                                 end
                             end
                         end
@@ -1682,82 +1699,7 @@ run(function()
                 end
             end
         end,
-        Tooltip = "👋📎."
-    })
-
-end)
-
-run(function()
-    local Step
-    local HeightValue
-
-    Step = vape.Categories.Blatant:CreateModule({
-        Name = "Step",
-        Function = function(callback)
-            if callback then
-                Step:Clean(runService.Stepped:Connect(function()
-                    if entitylib.isAlive and isnetworkowner(entitylib.character.RootPart) then
-                        local rootPart = entitylib.character.RootPart
-                        local humanoid = entitylib.character.Humanoid
-                        local moveDirection = humanoid.MoveDirection
-
-                        if moveDirection.Magnitude > 0.1 then
-                            local currentPos = rootPart.Position
-                            local characterHeight = humanoid.HipHeight + (rootPart.Size.Y / 2)
-                            
-                            -- Check the position directly in front of the player
-                            local checkPos = currentPos + moveDirection.Unit * 0.1
-                            local raycastParams = RaycastParams.new()
-                            raycastParams.FilterDescendantsInstances = {lplr.Character, gameCamera}
-                            raycastParams.RespectCanCollide = true
-
-                            -- Raycast down from the current height to check for a block we are standing on
-                            local downRayOrigin = Vector3.new(checkPos.X, checkPos.Y, checkPos.Z)
-                            local downRayDirection = Vector3.new(0, -2, 0) -- Check down 2 studs
-                            local downRaycastResult = workspace:Raycast(downRayOrigin, downRayDirection, raycastParams)
-
-                            -- If we are not on the ground (air below) or just left the ground
-                            if not downRaycastResult or downRaycastResult.Position.Y < (currentPos.Y - 0.5) then
-                                -- Raycast from the current position upwards to check for a step
-                                local upRayOrigin = Vector3.new(checkPos.X, checkPos.Y, checkPos.Z)
-                                local upRayDirection = Vector3.new(0, HeightValue.Value + 0.1, 0) -- Check up to max step height + buffer
-                                local upRaycastResult = workspace:Raycast(upRayOrigin, upRayDirection, raycastParams)
-
-                                -- If there's a block above to step onto
-                                if upRaycastResult and upRaycastResult.Instance.CanCollide then
-                                    local hitPoint = upRaycastResult.Position
-                                    local heightDifference = hitPoint.Y - currentPos.Y
-
-                                    -- Check if the height difference is within the allowed range
-                                    if heightDifference > 0 and heightDifference <= HeightValue.Value then
-                                        -- Calculate the new position directly on top of the stepped block
-                                        local newPos = Vector3.new(currentPos.X, hitPoint.Y + characterHeight, currentPos.Z)
-                                        -- Teleport the character
-                                        rootPart.CFrame = CFrame.new(newPos)
-                                        -- Zero out vertical velocity to prevent bouncing
-                                        rootPart.AssemblyLinearVelocity = Vector3.new(rootPart.AssemblyLinearVelocity.X, 0, rootPart.AssemblyLinearVelocity.Z)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end))
-            else
-                -- Cleanup handled by Vape's Step:Clean()
-            end
-        end,
-        Tooltip = "Teleports you up blocks up to the specified height, like Spider."
-    })
-
-    HeightValue = Step:CreateSlider({
-        Name = "Height",
-        Min = 1,
-        Max = 2,
-        Default = 2,
-        Decimal = 10,
-        Suffix = function(val)
-            return val == 1 and "stud" or "studs"
-        end
+        Tooltip = "n"
     })
 
 end)
