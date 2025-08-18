@@ -3154,7 +3154,7 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return 'Heatseeker'
+			return 'Heatseeker | WS:' .. math.floor(Value.Value)
 		end,
 		Tooltip = 'Increases your movement with various methods.'
 	})
