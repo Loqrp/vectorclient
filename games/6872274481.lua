@@ -1687,6 +1687,64 @@ run(function()
 
 end)
 
+run(function()
+    local Step
+    local HeightValue
+
+    Step = vape.Categories.Blatant:CreateModule({
+        Name = "Step",
+        Function = function(callback)
+            if callback then
+                Step:Clean(runService.Stepped:Connect(function()
+                    if entitylib.isAlive and isnetworkowner(entitylib.character.RootPart) then
+                        local rootPart = entitylib.character.RootPart
+                        local humanoid = entitylib.character.Humanoid
+                        local moveDirection = humanoid.MoveDirection
+
+                        if moveDirection.Magnitude > 0.1 and (humanoid.FloorMaterial ~= Enum.Material.Air or (tick() - (entitylib.groundTick or 0)) < 0.1) then
+                            local currentPos = rootPart.Position
+                            local characterHeight = humanoid.HipHeight + (rootPart.Size.Y / 2)
+                            local checkPos = currentPos + moveDirection.Unit * 0.5
+                            local raycastParams = RaycastParams.new()
+                            raycastParams.FilterDescendantsInstances = {lplr.Character, gameCamera}
+                            raycastParams.RespectCanCollide = true
+
+                            local rayOrigin = Vector3.new(checkPos.X, checkPos.Y + 0.1, checkPos.Z)
+                            local rayDirection = Vector3.new(0, -(0.1 + HeightValue.Value), 0)
+                            local raycastResult = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+                            if raycastResult and raycastResult.Instance.CanCollide then
+                                local hitPoint = raycastResult.Position
+                                local heightDifference = hitPoint.Y - currentPos.Y
+
+                                if heightDifference > 0.1 and heightDifference <= HeightValue.Value then
+                                    local newPos = Vector3.new(currentPos.X, hitPoint.Y + characterHeight, currentPos.Z)
+                                    rootPart.CFrame = CFrame.new(newPos)
+                                    rootPart.AssemblyLinearVelocity = Vector3.new(rootPart.AssemblyLinearVelocity.X, 0, rootPart.AssemblyLinearVelocity.Z)
+                                end
+                            end
+                        end
+                    end
+                end))
+            else
+				
+            end
+        end,
+        Tooltip = "Teleports you up blocks up to the specified height."
+    })
+
+    HeightValue = Step:CreateSlider({
+        Name = "Height",
+        Min = 0.1,
+        Max = 2.5,
+        Default = 2.5,
+        Decimal = 10,
+        Suffix = function(val)
+            return val == 1 and "stud" or "studs"
+        end
+    })
+
+end)
 
 run(function()
 	local Velocity
