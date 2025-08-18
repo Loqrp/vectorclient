@@ -1948,7 +1948,7 @@ run(function()
 					end
 				end
 		        lastonground = false
-        		if timerTextLabel then timerTextLabel:Destroy() timerTextLabel = nil end
+        		if timerTextLabel then timerTextLabel.Visible = false() timerTextLabel = nil end
 			end
 		end,
 		ExtraText = function()
