@@ -1912,7 +1912,7 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return 'Heatseeker'
+			return 'Heatseeker | WS:' .. math.floor(Value.Value)
 		end,
 		Tooltip = 'Makes you go zoom.'
 	})
@@ -2300,7 +2300,7 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return math.floor(ChargeTime.Value)
+			return string.format("%.1f", ChargeTime.Value)
 		end,
 		Tooltip = 'Attack players around you\nwithout aiming at them.'
 	})
@@ -2760,7 +2760,7 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return 'Heatseeker' .. math.floor(Value.value)
+			return 'Heatseeker | WS:' .. math.floor(Value.Value)
 		end,
 		Tooltip = 'Lets you jump farther'
 	})
