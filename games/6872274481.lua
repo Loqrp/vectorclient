@@ -1844,7 +1844,8 @@ run(function()
 						end
 
 						if flyAllowed <= 0 then
-							local newray = getPlacedBlock(entitylib.character.HumanoidRootPart.Position + Vector3.new(0, (entitylib.character.Humanoid.HipHeight * -2) - 1, 0))
+							local block, pos = getPlacedBlock(entitylib.character.HumanoidRootPart.Position + Vector3.new(0, (entitylib.character.Humanoid.HipHeight * -2) - 1, 0))
+							onground = block ~= nil
 							onground = newray and true or false
 							if lastonground ~= onground then
 								if (not onground) then
