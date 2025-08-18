@@ -1571,6 +1571,98 @@ run(function()
 end)
 	
 run(function()
+    local TexturePack
+    local con
+
+    local FirstPack = {
+        ["wood_sword"] = "rbxassetid://13806541421",
+        ["stone_sword"] = "rbxassetid://13806541421",
+        ["iron_sword"] = "rbxassetid://13806541421",
+        ["gold_sword"] = "rbxassetid://13806541421",
+        ["diamond_sword"] = "rbxassetid://13806541421",
+        ["netherite_sword"] = "rbxassetid://13806541421",
+        ["wood_pickaxe"] = "rbxassetid://13806541421",
+        ["stone_pickaxe"] = "rbxassetid://13806541421",
+        ["iron_pickaxe"] = "rbxassetid://13806541421",
+        ["gold_pickaxe"] = "rbxassetid://13806541421",
+        ["diamond_pickaxe"] = "rbxassetid://13806541421",
+        ["netherite_pickaxe"] = "rbxassetid://13806541421",
+        ["wood_axe"] = "rbxassetid://13806541421",
+        ["stone_axe"] = "rbxassetid://13806541421",
+        ["iron_axe"] = "rbxassetid://13806541421",
+        ["gold_axe"] = "rbxassetid://13806541421",
+        ["diamond_axe"] = "rbxassetid://13806541421",
+        ["netherite_axe"] = "rbxassetid://13806541421",
+        ["wood_shovel"] = "rbxassetid://13806541421",
+        ["stone_shovel"] = "rbxassetid://13806541421",
+        ["iron_shovel"] = "rbxassetid://13806541421",
+        ["gold_shovel"] = "rbxassetid://13806541421",
+        ["diamond_shovel"] = "rbxassetid://13806541421",
+        ["netherite_shovel"] = "rbxassetid://13806541421",
+        ["wood_hoe"] = "rbxassetid://13806541421",
+        ["stone_hoe"] = "rbxassetid://13806541421",
+        ["iron_hoe"] = "rbxassetid://13806541421",
+        ["gold_hoe"] = "rbxassetid://13806541421",
+        ["diamond_hoe"] = "rbxassetid://13806541421",
+        ["netherite_hoe"] = "rbxassetid://13806541421",
+        ["bow"] = "rbxassetid://13806541421",
+    }
+
+    local function applyTexture(tool, textureId)
+        if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
+            local decal = tool.Handle:FindFirstChild("VapeTexturePackDecal") or Instance.new("Decal")
+            decal.Name = "VapeTexturePackDecal"
+            decal.Texture = textureId
+            decal.Face = Enum.NormalId.Top
+            decal.Parent = tool.Handle
+        end
+    end
+
+    local function toolFunction(tool)
+        if tool:IsA("Tool") then
+            local itemType = tool.Name:lower()
+            local textureId = FirstPack[itemType]
+            if textureId then
+                applyTexture(tool, textureId)
+            end
+        end
+    end
+
+    local function applyToAllTools()
+        if gameCamera:FindFirstChild("Viewmodel") then
+            for _, tool in pairs(gameCamera.Viewmodel:GetChildren()) do
+                toolFunction(tool)
+            end
+        end
+    end
+
+    TexturePack = vape.Categories.World:CreateModule({
+        Name = "TexturePack",
+        Function = function(callback)
+            if callback then
+                pcall(function() con:Disconnect() end)
+                con = gameCamera:FindFirstChild("Viewmodel") and gameCamera.Viewmodel.ChildAdded:Connect(toolFunction) or nil
+                applyToAllTools()
+            else
+                pcall(function() con:Disconnect() end)
+                con = nil
+                if gameCamera:FindFirstChild("Viewmodel") then
+                    for _, tool in pairs(gameCamera.Viewmodel:GetChildren()) do
+                        if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
+                            local customDecal = tool.Handle:FindFirstChild("VapeTexturePackDecal")
+                            if customDecal then customDecal:Destroy() end
+                        end
+                    end
+                end
+            end
+        end,
+        Tooltip = "Applies Voidware's FirstPack textures."
+    })
+
+end)
+
+
+run(function()
 	local Velocity
 	local Horizontal
 	local Vertical
