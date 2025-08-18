@@ -1909,11 +1909,11 @@ run(function()
 					end
 				end
 			end
-		end
-		ExtraText = function()
-			return 'Heatseeker',
 		end,
-		Tooltip = 'Makes you go zoom.'
+		ExtraText = function()
+			return 'Heatseeker'
+		end,
+		Tooltip = 'Makes you go zoom.',
 	})
 	Value = Fly:CreateSlider({
 		Name = 'Speed',
