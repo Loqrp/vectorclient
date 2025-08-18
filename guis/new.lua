@@ -6347,6 +6347,17 @@ textguicolorcustom = textgui:CreateColorSlider({
 	Darker = true,
 	Visible = false
 })
+textguirightline = textgui:CreateColorSlider({
+	Name = 'Right background line',
+	Function = function(enabled)
+		if true then
+			holdercolorline.visible = true
+		else
+			holdercolorline.visible = false
+		end,
+	Darker = true,
+	Visible = false
+})
 
 --[[
 	Text GUI Objects
@@ -6451,7 +6462,6 @@ VapeLabelSorter.Parent = VapeLabelHolder
 local targetinfo
 local targetinfoobj
 local targetinfobcolor
-local targetinfofollow
 targetinfoobj = mainapi:CreateOverlay({
 	Name = 'Target Info',
 	Icon = getcustomasset('vectorclient/assets/new/targetinfoicon.png'),
@@ -6462,13 +6472,7 @@ targetinfoobj = mainapi:CreateOverlay({
 		if callback then
 			task.spawn(function()
 				repeat
-					local target = targetinfo:UpdateInfo()
-					if target ~= nil and targetinfofollow and targetinfofollow.Enabled then
-						local vec, screen = workspace.CurrentCamera:WorldToScreenPoint(target.Position)
-						if screen and targetinfobkg and targetinfobkg.Parent and targetinfobkg.Parent.Parent then
-							targetinfobkg.Parent.Parent.Position = UDim2.fromOffset(vec.X, vec.Y)
-						end
-					end
+					targetinfo:UpdateInfo()
 					task.wait()
 				until not targetinfoobj.Button or not targetinfoobj.Button.Enabled
 			end)
@@ -6644,10 +6648,6 @@ targetinfobcolor = targetinfoobj:CreateColorSlider({
 	Visible = false
 })
 
-targetinfofollow = targetinfoobj:CreateToggle({
-	Name = 'Follow Player',
-	Function = function() end
-})
 
 local lasthealth = 0
 local lastmaxhealth = 0
