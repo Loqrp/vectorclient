@@ -1914,7 +1914,8 @@ run(function()
 						bedwars.BalloonController:deflateBalloon()
 					end
 				end
-			end,
+			end
+		end,
 		ExtraText = function()
 			return 'Heatseeker'
 		end,
