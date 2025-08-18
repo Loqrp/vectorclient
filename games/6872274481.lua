@@ -1610,11 +1610,18 @@ run(function()
 
     local function applyTexture(tool, textureId)
         if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-            local decal = tool.Handle:FindFirstChild("VapeTexturePackDecal") or Instance.new("Decal")
-            decal.Name = "VapeTexturePackDecal"
-            decal.Texture = textureId
-            decal.Face = Enum.NormalId.Top
-            decal.Parent = tool.Handle
+            local facesToApply = {
+                Enum.NormalId.Top, Enum.NormalId.Front, Enum.NormalId.Back,
+                Enum.NormalId.Left, Enum.NormalId.Right, Enum.NormalId.Bottom
+            }
+            for _, face in ipairs(facesToApply) do
+                local decalName = "VapeTexturePackDecal_" .. face.Name
+                local decal = tool.Handle:FindFirstChild(decalName) or Instance.new("Decal")
+                decal.Name = decalName
+                decal.Texture = textureId
+                decal.Face = face
+                decal.Parent = tool.Handle
+            end
         end
     end
 
@@ -1631,32 +1638,37 @@ run(function()
     local function applyToAllTools()
         if gameCamera:FindFirstChild("Viewmodel") then
             for _, tool in pairs(gameCamera.Viewmodel:GetChildren()) do
-                toolFunction(tool)
+                pcall(toolFunction, tool)
             end
         end
     end
 
-    TexturePack = vape.Categories.World:CreateModule({
+    TexturePack = vape.Categories.Render:CreateModule({
         Name = "TexturePack",
         Function = function(callback)
             if callback then
-                pcall(function() con:Disconnect() end)
+                pcall(function() if con then con:Disconnect() end end)
                 con = gameCamera:FindFirstChild("Viewmodel") and gameCamera.Viewmodel.ChildAdded:Connect(toolFunction) or nil
                 applyToAllTools()
             else
-                pcall(function() con:Disconnect() end)
+                pcall(function() if con then con:Disconnect() end end)
                 con = nil
                 if gameCamera:FindFirstChild("Viewmodel") then
                     for _, tool in pairs(gameCamera.Viewmodel:GetChildren()) do
                         if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-                            local customDecal = tool.Handle:FindFirstChild("VapeTexturePackDecal")
-                            if customDecal then customDecal:Destroy() end
+                            for _, faceName in ipairs({"Top", "Front", "Back", "Left", "Right", "Bottom"}) do
+                                local decalName = "VapeTexturePackDecal_" .. faceName
+                                local customDecal = tool.Handle:FindFirstChild(decalName)
+                                if customDecal then
+                                    customDecal:Destroy()
+                                end
+                            end
                         end
                     end
                 end
             end
         end,
-        Tooltip = "Applies Voidware's FirstPack textures."
+        Tooltip = "HOI"
     })
 
 end)
