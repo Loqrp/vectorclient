@@ -1604,6 +1604,9 @@ run(function()
 				bedwars.KnockbackUtil.applyKnockback = old
 			end
 		end,
+		ExtraText = function()
+			return math.floor(Horizontal.Value) '% ' math.floor(Vertical.Value) '%'
+		end,
 		Tooltip = 'Reduces knockback taken'
 	})
 	Horizontal = Velocity:CreateSlider({
