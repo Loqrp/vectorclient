@@ -1796,7 +1796,6 @@ run(function()
 		Suffix = 'seconds'
 	})
 end)
-	
 local Fly
 local LongJump
 run(function()
@@ -1805,6 +1804,8 @@ run(function()
 	local WallCheck
 	local PopBalloons
 	local TP
+	local lastonground = false
+	local groundtime = 0
 	local onground = true
 	local rayCheck = RaycastParams.new()
 	rayCheck.RespectCanCollide = true
@@ -1911,9 +1912,9 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return 'Heatseeker',
+			return 'Heatseeker'
 		end,
-		Tooltip = 'Makes you go zoom.',
+		Tooltip = 'Makes you go zoom.'
 	})
 	Value = Fly:CreateSlider({
 		Name = 'Speed',
@@ -1946,7 +1947,7 @@ run(function()
 		Default = true
 	})
 end)
-	
+
 run(function()
 	local Mode
 	local Expand
