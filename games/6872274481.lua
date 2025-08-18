@@ -1573,94 +1573,108 @@ end)
 run(function()
     local TexturePack
     local con
-
-    local FirstPack = {
-        ["wood_sword"] = "rbxassetid://13806541421",
-        ["stone_sword"] = "rbxassetid://13806541421",
-        ["iron_sword"] = "rbxassetid://13806541421",
-        ["gold_sword"] = "rbxassetid://13806541421",
-        ["diamond_sword"] = "rbxassetid://13806541421",
-        ["netherite_sword"] = "rbxassetid://13806541421",
-        ["wood_pickaxe"] = "rbxassetid://13806541421",
-        ["stone_pickaxe"] = "rbxassetid://13806541421",
-        ["iron_pickaxe"] = "rbxassetid://13806541421",
-        ["gold_pickaxe"] = "rbxassetid://13806541421",
-        ["diamond_pickaxe"] = "rbxassetid://13806541421",
-        ["netherite_pickaxe"] = "rbxassetid://13806541421",
-        ["wood_axe"] = "rbxassetid://13806541421",
-        ["stone_axe"] = "rbxassetid://13806541421",
-        ["iron_axe"] = "rbxassetid://13806541421",
-        ["gold_axe"] = "rbxassetid://13806541421",
-        ["diamond_axe"] = "rbxassetid://13806541421",
-        ["netherite_axe"] = "rbxassetid://13806541421",
-        ["wood_shovel"] = "rbxassetid://13806541421",
-        ["stone_shovel"] = "rbxassetid://13806541421",
-        ["iron_shovel"] = "rbxassetid://13806541421",
-        ["gold_shovel"] = "rbxassetid://13806541421",
-        ["diamond_shovel"] = "rbxassetid://13806541421",
-        ["netherite_shovel"] = "rbxassetid://13806541421",
-        ["wood_hoe"] = "rbxassetid://13806541421",
-        ["stone_hoe"] = "rbxassetid://13806541421",
-        ["iron_hoe"] = "rbxassetid://13806541421",
-        ["gold_hoe"] = "rbxassetid://13806541421",
-        ["diamond_hoe"] = "rbxassetid://13806541421",
-        ["netherite_hoe"] = "rbxassetid://13806541421",
-        ["bow"] = "rbxassetid://13806541421",
-    }
-
-    local function applyTexture(tool, textureId)
-        if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-            local facesToApply = {
-                Enum.NormalId.Top, Enum.NormalId.Front, Enum.NormalId.Back,
-                Enum.NormalId.Left, Enum.NormalId.Right, Enum.NormalId.Bottom
-            }
-            for _, face in ipairs(facesToApply) do
-                local decalName = "VapeTexturePackDecal_" .. face.Name
-                local decal = tool.Handle:FindFirstChild(decalName) or Instance.new("Decal")
-                decal.Name = decalName
-                decal.Texture = textureId
-                decal.Face = face
-                decal.Parent = tool.Handle
-            end
-        end
-    end
+    local importModel
+    local indexTable
 
     local function toolFunction(tool)
-        if tool:IsA("Tool") then
-            local itemType = tool.Name:lower()
-            local textureId = FirstPack[itemType]
-            if textureId then
-                applyTexture(tool, textureId)
+        if tool:IsA("Tool") and importModel then
+            for _, itemData in ipairs(indexTable) do
+                if tool.Name:lower() == itemData.name then
+                    local modelClone = itemData.model:Clone()
+                    modelClone.CFrame = tool.Handle.CFrame * itemData.offset
+                    modelClone.Parent = tool
+
+                    local weldConstraint = Instance.new("WeldConstraint")
+                    weldConstraint.Part0 = modelClone
+                    weldConstraint.Part1 = tool.Handle
+                    weldConstraint.Parent = modelClone
+                    break
+                end
             end
         end
     end
 
     local function applyToAllTools()
-        if gameCamera:FindFirstChild("Viewmodel") then
-            for _, tool in pairs(gameCamera.Viewmodel:GetChildren()) do
+        local camera = workspace:FindFirstChild("Camera")
+        if camera and camera:FindFirstChild("Viewmodel") then
+            for _, tool in pairs(camera.Viewmodel:GetChildren()) do
                 pcall(toolFunction, tool)
             end
         end
+    end
+
+    local function loadFirstPack()
+        pcall(function() importModel:Destroy() end)
+        importModel = nil
+        indexTable = nil
+
+        local objs = game:GetObjects("rbxassetid://13783192680")
+        importModel = objs[1]
+        importModel.Parent = game:GetService("ReplicatedStorage")
+
+        indexTable = {
+            {name = "wood_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Sword")},
+            {name = "stone_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Sword")},
+            {name = "iron_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Sword")},
+            {name = "gold_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Sword")},
+            {name = "diamond_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Sword")},
+            {name = "netherite_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Sword")},
+            {name = "wood_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Pickaxe")},
+            {name = "stone_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Pickaxe")},
+            {name = "iron_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Pickaxe")},
+            {name = "gold_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Pickaxe")},
+            {name = "diamond_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Pickaxe")},
+            {name = "netherite_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Pickaxe")},
+            {name = "wood_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Axe")},
+            {name = "stone_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Axe")},
+            {name = "iron_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Axe")},
+            {name = "gold_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Axe")},
+            {name = "diamond_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Axe")},
+            {name = "netherite_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Axe")},
+            {name = "wood_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Shovel")},
+            {name = "stone_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Shovel")},
+            {name = "iron_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Shovel")},
+            {name = "gold_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Shovel")},
+            {name = "diamond_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Shovel")},
+            {name = "netherite_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Shovel")},
+            {name = "wood_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Hoe")},
+            {name = "stone_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Hoe")},
+            {name = "iron_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Hoe")},
+            {name = "gold_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Hoe")},
+            {name = "diamond_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Hoe")},
+            {name = "netherite_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Hoe")},
+            {name = "bow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Bow")},
+            {name = "crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Crossbow")},
+            {name = "wood_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Crossbow")},
+            {name = "tactical_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Tactical_Crossbow")},
+            {name = "repeater_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Repeater_Crossbow")},
+            {name = "soul_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Soul_Crossbow")},
+        }
     end
 
     TexturePack = vape.Categories.Render:CreateModule({
         Name = "TexturePack",
         Function = function(callback)
             if callback then
-                pcall(function() if con then con:Disconnect() end end)
-                con = gameCamera:FindFirstChild("Viewmodel") and gameCamera.Viewmodel.ChildAdded:Connect(toolFunction) or nil
+                loadFirstPack()
+                pcall(function() con:Disconnect() end)
+                local camera = workspace:FindFirstChild("Camera")
+                con = camera and camera:FindFirstChild("Viewmodel") and camera.Viewmodel.ChildAdded:Connect(toolFunction) or nil
                 applyToAllTools()
             else
-                pcall(function() if con then con:Disconnect() end end)
+                pcall(function() con:Disconnect() end)
                 con = nil
-                if gameCamera:FindFirstChild("Viewmodel") then
-                    for _, tool in pairs(gameCamera.Viewmodel:GetChildren()) do
-                        if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-                            for _, faceName in ipairs({"Top", "Front", "Back", "Left", "Right", "Bottom"}) do
-                                local decalName = "VapeTexturePackDecal_" .. faceName
-                                local customDecal = tool.Handle:FindFirstChild(decalName)
-                                if customDecal then
-                                    customDecal:Destroy()
+                pcall(function() importModel:Destroy() end)
+                importModel = nil
+                indexTable = nil
+
+                local camera = workspace:FindFirstChild("Camera")
+                if camera and camera:FindFirstChild("Viewmodel") then
+                    for _, tool in pairs(camera.Viewmodel:GetChildren()) do
+                        if tool:IsA("Tool") then
+                            for _, child in pairs(tool:GetChildren()) do
+                                if child:IsA("Model") and child.Name ~= "Handle" then
+                                    child:Destroy()
                                 end
                             end
                         end
@@ -1668,7 +1682,7 @@ run(function()
                 end
             end
         end,
-        Tooltip = "HOI"
+        Tooltip = "👋"
     })
 
 end)
