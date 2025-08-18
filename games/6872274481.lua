@@ -2299,6 +2299,9 @@ run(function()
 				end
 			end
 		end,
+		ExtraText = function()
+			return ' ' math.floor(distance.Value)
+		end,
 		Tooltip = 'Attack players around you\nwithout aiming at them.'
 	})
 	Targets = Killaura:CreateTargets({
@@ -2757,7 +2760,7 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return 'Heatseeker'
+			return 'Heatseeker' .. math.floor(Value.value)
 		end,
 		Tooltip = 'Lets you jump farther'
 	})
