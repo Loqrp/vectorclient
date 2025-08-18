@@ -2300,7 +2300,7 @@ run(function()
 			end
 		end,
 		ExtraText = function()
-			return .. math.floor(distance.Value)
+			return distance.Value
 		end,
 		Tooltip = 'Attack players around you\nwithout aiming at them.'
 	})
