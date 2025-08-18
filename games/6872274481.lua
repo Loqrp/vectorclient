@@ -1911,7 +1911,7 @@ run(function()
 			end
 		end
 		ExtraText = function()
-			return 'Heatseeker'
+			return 'Heatseeker',
 		end,
 		Tooltip = 'Makes you go zoom.'
 	})
