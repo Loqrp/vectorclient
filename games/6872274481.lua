@@ -1949,7 +1949,7 @@ run(function()
 				end
 		        lastonground = false
         		if timerTextLabel then timerTextLabel.Visible = false() timerTextLabel = nil end
-			end
+			end,
 		end,
 		ExtraText = function()
 			return 'Heatseeker'
