@@ -1582,9 +1582,15 @@ run(function()
         importModel = nil
         indexTable = nil
 
+
         local objs = game:GetObjects("rbxassetid://13783192680")
-        importModel = objs[1]
-        importModel.Parent = game:GetService("ReplicatedStorage")
+        if #objs > 0 then
+            importModel = objs[1] 
+            importModel.Parent = game:GetService("ReplicatedStorage")
+        else
+            warn("Failed to load FirstPack asset.")
+            return
+        end
 
         indexTable = {
             {name = "wood_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Sword")},
@@ -1665,8 +1671,8 @@ run(function()
     end
 
     TexturePacks = vape.Categories.Render:CreateModule({
-        Name = "TexturePacksV3",
-        Function = function(callback)
+        ["Name"] = "TexturePack",
+        ["Function"] = function(callback)
             if callback then
                 TexturePacks.Enabled = true
                 toolFunction = processTool
@@ -1699,7 +1705,7 @@ run(function()
                 end
             end
         end,
-        Tooltip = "n"
+        Tooltip = "b"
     })
 
 end)
