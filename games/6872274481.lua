@@ -2301,7 +2301,7 @@ run(function()
 		end,
 		Tooltip = 'Attack players around you\nwithout aiming at them.'
 		ExtraText = function()
-			return math.floor(Distance.Value)
+			return math.floor(Distance.Value),
 		end,
 	})
 	Targets = Killaura:CreateTargets({
