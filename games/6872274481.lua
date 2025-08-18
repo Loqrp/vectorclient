@@ -1809,8 +1809,6 @@ run(function()
 	local rayCheck = RaycastParams.new()
 	rayCheck.RespectCanCollide = true
 	local up, down, old = 0, 0
-	
-
 
 	Fly = vape.Categories.Blatant:CreateModule({
 		Name = 'Fly',
