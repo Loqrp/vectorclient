@@ -1577,60 +1577,59 @@ run(function()
     local importModel
     local indexTable
 
-    local function loadFirstPack()
-        pcall(function() if importModel then importModel:Destroy() end end)
-        importModel = nil
-        indexTable = nil
+	local function loadFirstPack()
+		pcall(function() if importModel then importModel:Destroy() end end)
+		importModel = nil
+		indexTable = nil
 
+		local objs = game:GetObjects("rbxassetid://13783192680")
+		if #objs > 0 and objs[1]:IsA("Model") then
+			importModel = objs[1]
+			importModel.Parent = game:GetService("ReplicatedStorage")
+		else
+			warn("Failed to load FirstPack asset.")
+			return
+		end
 
-        local objs = game:GetObjects("rbxassetid://13783192680")
-        if #objs > 0 then
-            importModel = objs[1] 
-            importModel.Parent = game:GetService("ReplicatedStorage")
-        else
-            warn("Failed to load FirstPack asset.")
-            return
-        end
-
-        indexTable = {
-            {name = "wood_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Sword")},
-            {name = "stone_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Sword")},
-            {name = "iron_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Sword")},
-            {name = "gold_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Sword")},
-            {name = "diamond_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Sword")},
-            {name = "netherite_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Sword")},
-            {name = "wood_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Pickaxe")},
-            {name = "stone_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Pickaxe")},
-            {name = "iron_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Pickaxe")},
-            {name = "gold_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Pickaxe")},
-            {name = "diamond_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Pickaxe")},
-            {name = "netherite_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Pickaxe")},
-            {name = "wood_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Axe")},
-            {name = "stone_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Axe")},
-            {name = "iron_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Axe")},
-            {name = "gold_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Axe")},
-            {name = "diamond_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Axe")},
-            {name = "netherite_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Axe")},
-            {name = "wood_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Shovel")},
-            {name = "stone_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Shovel")},
-            {name = "iron_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Shovel")},
-            {name = "gold_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Shovel")},
-            {name = "diamond_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Shovel")},
-            {name = "netherite_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Shovel")},
-            {name = "wood_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Hoe")},
-            {name = "stone_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Hoe")},
-            {name = "iron_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Hoe")},
-            {name = "gold_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Hoe")},
-            {name = "diamond_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Hoe")},
-            {name = "netherite_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Hoe")},
-            {name = "bow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Bow")},
-            {name = "crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Crossbow")},
-            {name = "wood_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Crossbow")},
-            {name = "tactical_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Tactical_Crossbow")},
-            {name = "repeater_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Repeater_Crossbow")},
-            {name = "soul_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Soul_Crossbow")},
-        }
-    end
+		indexTable = {
+			{name = "wood_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Sword")},
+			{name = "stone_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Sword")},
+			{name = "iron_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Sword")},
+			{name = "gold_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Sword")},
+			{name = "diamond_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Sword")},
+			{name = "netherite_sword", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Sword")},
+			{name = "wood_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Pickaxe")},
+			{name = "stone_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Pickaxe")},
+			{name = "iron_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Pickaxe")},
+			{name = "gold_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Pickaxe")},
+			{name = "diamond_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Pickaxe")},
+			{name = "netherite_pickaxe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Pickaxe")},
+			{name = "wood_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Axe")},
+			{name = "stone_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Axe")},
+			{name = "iron_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Axe")},
+			{name = "gold_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Axe")},
+			{name = "diamond_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Axe")},
+			{name = "netherite_axe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Axe")},
+			{name = "wood_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Shovel")},
+			{name = "stone_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Shovel")},
+			{name = "iron_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Shovel")},
+			{name = "gold_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Shovel")},
+			{name = "diamond_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Shovel")},
+			{name = "netherite_shovel", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Shovel")},
+			{name = "wood_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Hoe")},
+			{name = "stone_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Stone_Hoe")},
+			{name = "iron_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Iron_Hoe")},
+			{name = "gold_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Gold_Hoe")},
+			{name = "diamond_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Diamond_Hoe")},
+			{name = "netherite_hoe", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Netherite_Hoe")},
+			{name = "bow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Bow")},
+			{name = "crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Crossbow")},
+			{name = "wood_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Wood_Crossbow")},
+			{name = "tactical_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Tactical_Crossbow")},
+			{name = "repeater_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Repeater_Crossbow")},
+			{name = "soul_crossbow", offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)), model = importModel:WaitForChild("Soul_Crossbow")},
+		}
+	end
 
     local function processTool(tool)
         if tool:IsA("Tool") and importModel and indexTable then
