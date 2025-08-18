@@ -6348,15 +6348,6 @@ textguicolorcustom = textgui:CreateColorSlider({
 	Darker = true,
 	Visible = false
 })
-textguiline = textgui:CreateToggle({
-	Name = 'Line',
-	Function = function(enabled)
-		if holdercolorline then
-			holdercolorline.Visible = enabled
-		end
-		mainapi:UpdateTextGUI()
-	end
-})
 
 
 --[[
