@@ -1701,43 +1701,59 @@ run(function()
                         local humanoid = entitylib.character.Humanoid
                         local moveDirection = humanoid.MoveDirection
 
-                        if moveDirection.Magnitude > 0.1 and (humanoid.FloorMaterial ~= Enum.Material.Air or (tick() - (entitylib.groundTick or 0)) < 0.1) then
+                        if moveDirection.Magnitude > 0.1 then
                             local currentPos = rootPart.Position
                             local characterHeight = humanoid.HipHeight + (rootPart.Size.Y / 2)
-                            local checkPos = currentPos + moveDirection.Unit * 0.5
+                            
+                            -- Check the position directly in front of the player
+                            local checkPos = currentPos + moveDirection.Unit * 0.1
                             local raycastParams = RaycastParams.new()
                             raycastParams.FilterDescendantsInstances = {lplr.Character, gameCamera}
                             raycastParams.RespectCanCollide = true
 
-                            local rayOrigin = Vector3.new(checkPos.X, checkPos.Y + 0.1, checkPos.Z)
-                            local rayDirection = Vector3.new(0, -(0.1 + HeightValue.Value), 0)
-                            local raycastResult = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+                            -- Raycast down from the current height to check for a block we are standing on
+                            local downRayOrigin = Vector3.new(checkPos.X, checkPos.Y, checkPos.Z)
+                            local downRayDirection = Vector3.new(0, -2, 0) -- Check down 2 studs
+                            local downRaycastResult = workspace:Raycast(downRayOrigin, downRayDirection, raycastParams)
 
-                            if raycastResult and raycastResult.Instance.CanCollide then
-                                local hitPoint = raycastResult.Position
-                                local heightDifference = hitPoint.Y - currentPos.Y
+                            -- If we are not on the ground (air below) or just left the ground
+                            if not downRaycastResult or downRaycastResult.Position.Y < (currentPos.Y - 0.5) then
+                                -- Raycast from the current position upwards to check for a step
+                                local upRayOrigin = Vector3.new(checkPos.X, checkPos.Y, checkPos.Z)
+                                local upRayDirection = Vector3.new(0, HeightValue.Value + 0.1, 0) -- Check up to max step height + buffer
+                                local upRaycastResult = workspace:Raycast(upRayOrigin, upRayDirection, raycastParams)
 
-                                if heightDifference > 0.1 and heightDifference <= HeightValue.Value then
-                                    local newPos = Vector3.new(currentPos.X, hitPoint.Y + characterHeight, currentPos.Z)
-                                    rootPart.CFrame = CFrame.new(newPos)
-                                    rootPart.AssemblyLinearVelocity = Vector3.new(rootPart.AssemblyLinearVelocity.X, 0, rootPart.AssemblyLinearVelocity.Z)
+                                -- If there's a block above to step onto
+                                if upRaycastResult and upRaycastResult.Instance.CanCollide then
+                                    local hitPoint = upRaycastResult.Position
+                                    local heightDifference = hitPoint.Y - currentPos.Y
+
+                                    -- Check if the height difference is within the allowed range
+                                    if heightDifference > 0 and heightDifference <= HeightValue.Value then
+                                        -- Calculate the new position directly on top of the stepped block
+                                        local newPos = Vector3.new(currentPos.X, hitPoint.Y + characterHeight, currentPos.Z)
+                                        -- Teleport the character
+                                        rootPart.CFrame = CFrame.new(newPos)
+                                        -- Zero out vertical velocity to prevent bouncing
+                                        rootPart.AssemblyLinearVelocity = Vector3.new(rootPart.AssemblyLinearVelocity.X, 0, rootPart.AssemblyLinearVelocity.Z)
+                                    end
                                 end
                             end
                         end
                     end
                 end))
             else
-				
+                -- Cleanup handled by Vape's Step:Clean()
             end
         end,
-        Tooltip = "Teleports you up blocks up to the specified height."
+        Tooltip = "Teleports you up blocks up to the specified height, like Spider."
     })
 
     HeightValue = Step:CreateSlider({
         Name = "Height",
-        Min = 0.1,
-        Max = 2.5,
-        Default = 2.5,
+        Min = 1,
+        Max = 2,
+        Default = 2,
         Decimal = 10,
         Suffix = function(val)
             return val == 1 and "stud" or "studs"
