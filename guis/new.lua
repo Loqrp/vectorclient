@@ -6949,7 +6949,7 @@ run(function()
 			return v
 		end
 	}
-	mainapi.Libraries.targetinfo = targetinfo
+	mainapi.Libraries.targetinfo2 = targetinfo2
 
 	targetinfodisplay = targetinfoobj:CreateToggle({
 		Name = 'Use Displayname',
