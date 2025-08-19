@@ -8501,95 +8501,6 @@ run(function()
 end)
 	
 
-run(function()
-    local TexturePacksV2
-    local TexturePacksV2_Connections = {}
-    local TexturePacksV2_GUI_Elements = {
-        Material = {Value = "Neon"},
-        Color = {Hue = 0, Sat = 0, Value = 0},
-        GuiSync = {Enabled = false}
-    }
-
-    local function refreshChild(child, children)
-        if not child then return end
-        if not table.find(children, child) then table.insert(children, child) end
-        if child:IsA("Accessory") or child:IsA("Tool") then
-            for _, v in pairs(child:GetDescendants()) do
-                if v:IsA("BasePart") and not v:IsA("UnionOperation") then
-                    v.Material = Enum.Material.ForceField
-                    if TexturePacksV2_GUI_Elements.GuiSync.Enabled and TexturePacksV2.Enabled then
-                        local color = vape.GUIColor
-                        v.Color = Color3.fromHSV(color.Hue, color.Sat, color.Value)
-                    else
-                        v.Color = Color3.fromHSV(TexturePacksV2_GUI_Elements.Color.Hue, TexturePacksV2_GUI_Elements.Color.Sat, TexturePacksV2_GUI_Elements.Color.Value)
-                    end
-                end
-            end
-        end
-    end
-
-    local function refreshChildren()
-		if not TexturePacksV2.Enabled then return end
-        local viewmodel = gameCamera:FindFirstChild("Viewmodel")
-        local children = {}
-        if viewmodel and viewmodel:IsA("Model") then
-            children = viewmodel:GetChildren()
-        end
-        for _, v in pairs(children) do
-            refreshChild(v, children)
-        end
-    end
-
-    TexturePacksV2 = vape.Categories.Render:CreateModule({
-        Name = "NeonItems",
-        Function = function(callback)
-            if callback then
-                TexturePacksV2:Clean(runService.Heartbeat:Connect(function()
-                    if TexturePacksV2.Enabled then
-                        refreshChildren()
-                    end
-                end))
-            else
-            end
-        end,
-        Tooltip = "Applies a Neon material and color to your sword."
-    })
-
-    TexturePacksV2.Restart = function()
-        if TexturePacksV2.Enabled then
-            TexturePacksV2:Toggle()
-            TexturePacksV2:Toggle()
-        end
-    end
-
-    TexturePacksV2_GUI_Elements.Material = TexturePacksV2:CreateDropdown({
-        Name = "Material",
-        Function = function()
-            refreshChildren()
-        end,
-        List = {"ForceField"},
-        Default = "ForceField"
-    })
-    TexturePacksV2_GUI_Elements.Material.Object.Visible = false
-
-    TexturePacksV2_GUI_Elements.Color = TexturePacksV2:CreateColorSlider({
-        Name = "Color",
-        Function = function()
-            refreshChildren()
-        end
-    })
-
-    TexturePacksV2_GUI_Elements.GuiSync = TexturePacksV2:CreateToggle({
-        Name = "GUI Color Sync",
-        Function = function(callback)
-            TexturePacksV2_GUI_Elements.GuiSync.Enabled = callback
-            TexturePacksV2.Restart()
-        end,
-        Default = false
-    })
-
-end)
-
 
 run(function()
     local TexturePacksV2
@@ -8631,7 +8542,7 @@ run(function()
     end
 
     TexturePacksV2 = vape.Categories.Render:CreateModule({
-        Name = "FFItems",
+        Name = "CustomItems",
         Function = function(callback)
             if callback then
                 TexturePacksV2:Clean(runService.Heartbeat:Connect(function()
@@ -8658,6 +8569,7 @@ run(function()
             refreshChildren()
         end,
         List = {"ForceField"},
+			   {"Neon"},
         Default = "ForceField"
     })
     TexturePacksV2_GUI_Elements.Material.Object.Visible = false
