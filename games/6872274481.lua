@@ -8542,7 +8542,7 @@ run(function()
     end
 
     TexturePacksV2 = vape.Categories.Render:CreateModule({
-        Name = "CustomItems",
+        Name = "FFItems",
         Function = function(callback)
             if callback then
                 TexturePacksV2:Clean(runService.Heartbeat:Connect(function()
@@ -8569,7 +8569,6 @@ run(function()
             refreshChildren()
         end,
         List = {"ForceField"},
-			   {"Neon"},
         Default = "ForceField"
     })
     TexturePacksV2_GUI_Elements.Material.Object.Visible = false
@@ -8588,6 +8587,34 @@ run(function()
             TexturePacksV2.Restart()
         end,
         Default = false
+    })
+
+end)
+
+run(function()
+    local InfiniteJump
+    local connection
+
+    InfiniteJump = vape.Categories.Blatant:CreateModule({
+        Name = "InfiniteJump",
+        Function = function(callback)
+            if callback then
+                connection = inputService.JumpRequest:Connect(function()
+                    if entitylib.isAlive and InfiniteJump.Enabled then
+                        local humanoid = entitylib.character and entitylib.character.Humanoid
+                        if humanoid then
+                            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                        end
+                    end
+                end)
+            else
+                if connection then
+                    pcall(function() connection:Disconnect() end)
+                    connection = nil
+                end
+            end
+        end,
+        Tooltip = "Allows you to jump infinitely"
     })
 
 end)
