@@ -8586,7 +8586,7 @@ run(function()
             TexturePacksV2_GUI_Elements.GuiSync.Enabled = callback
             TexturePacksV2.Restart()
         end,
-        Default = true
+        Default = false
     })
 
 end)
