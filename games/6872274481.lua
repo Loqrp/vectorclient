@@ -8543,7 +8543,7 @@ run(function()
     end
 
     TexturePacksV2 = vape.Categories.Render:CreateModule({
-        Name = "FFSword",
+        Name = "FFItems",
         Function = function(callback)
             if callback then
                 TexturePacksV2:Clean(runService.Heartbeat:Connect(function()
