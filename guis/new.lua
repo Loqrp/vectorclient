@@ -6702,165 +6702,167 @@ mainapi.Libraries.targetinfo = targetinfo
 
 
 
-local G2L = {};
-
--- StarterGui.vxpe
-G2L["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
-G2L["1"]["Name"] = [[vxpe]];
-G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
-
-
--- StarterGui.vxpe.zemainthing
-G2L["2"] = Instance.new("Frame", G2L["1"]);
-G2L["2"]["BorderSizePixel"] = 0;
-G2L["2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["2"]["Size"] = UDim2.new(1, 0, 1, 0);
-G2L["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["2"]["Name"] = [[zemainthing]];
-G2L["2"]["BackgroundTransparency"] = 1;
-
-
--- StarterGui.vxpe.zemainthing.gui
-G2L["3"] = Instance.new("Frame", G2L["2"]);
-G2L["3"]["BorderSizePixel"] = 0;
-G2L["3"]["BackgroundColor3"] = Color3.fromRGB(25, 25, 57);
-G2L["3"]["Size"] = UDim2.new(0, 216, 0, 89);
-G2L["3"]["Position"] = UDim2.new(0.28675, 0, 0.52555, 0);
-G2L["3"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["3"]["Name"] = [[gui]];
-
-
--- StarterGui.vxpe.zemainthing.gui.Player
-G2L["4"] = Instance.new("ImageLabel", G2L["3"]);
-G2L["4"]["BorderSizePixel"] = 0;
-G2L["4"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
--- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
-G2L["4"]["Image"] = [[rbxassetid://6877509129]];
-G2L["4"]["Size"] = UDim2.new(0, 60, 0, 60);
-G2L["4"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["4"]["BackgroundTransparency"] = 1;
-G2L["4"]["Name"] = [[Player]];
-G2L["4"]["Position"] = UDim2.new(0.0463, 0, 0.1573, 0);
-
-
--- StarterGui.vxpe.zemainthing.gui.Hp
-G2L["5"] = Instance.new("Frame", G2L["3"]);
-G2L["5"]["BorderSizePixel"] = 0;
-G2L["5"]["BackgroundColor3"] = Color3.fromRGB(0, 255, 18);
-G2L["5"]["Size"] = UDim2.new(0, 129, 0, 15);
-G2L["5"]["Position"] = UDim2.new(0.35648, 0, 0.59551, 0);
-G2L["5"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["5"]["Name"] = [[Hp]];
-
-
--- StarterGui.vxpe.zemainthing.gui.Hp.UICorner
-G2L["6"] = Instance.new("UICorner", G2L["5"]);
-
-
-
--- StarterGui.vxpe.zemainthing.gui.Hp.UIStroke
-G2L["7"] = Instance.new("UIStroke", G2L["5"]);
-G2L["7"]["Thickness"] = 2;
-G2L["7"]["Color"] = Color3.fromRGB(65, 65, 81);
-
-
--- StarterGui.vxpe.zemainthing.gui.Hp.UIStroke
-G2L["8"] = Instance.new("UIStroke", G2L["5"]);
-G2L["8"]["Thickness"] = 2;
-G2L["8"]["Color"] = Color3.fromRGB(65, 65, 81);
-
-
--- StarterGui.vxpe.zemainthing.gui.Username
-G2L["9"] = Instance.new("TextLabel", G2L["3"]);
-G2L["9"]["TextWrapped"] = true;
-G2L["9"]["TextStrokeTransparency"] = 0;
-G2L["9"]["BorderSizePixel"] = 0;
-G2L["9"]["TextSize"] = 14;
-G2L["9"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-G2L["9"]["TextScaled"] = true;
-G2L["9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["9"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-G2L["9"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["9"]["BackgroundTransparency"] = 1;
-G2L["9"]["Size"] = UDim2.new(0, 129, 0, 24);
-G2L["9"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["9"]["Text"] = [[OnlyUnderTwenty]];
-G2L["9"]["Name"] = [[Username]];
-G2L["9"]["Position"] = UDim2.new(0.35648, 0, 0.22472, 0);
-
-
--- StarterGui.vxpe.zemainthing.gui.UICorner
-G2L["a"] = Instance.new("UICorner", G2L["3"]);
-
-
-
--- StarterGui.vxpe.zemainthing.gui.UIStroke
-G2L["b"] = Instance.new("UIStroke", G2L["3"]);
-G2L["b"]["Thickness"] = 2;
-G2L["b"]["Color"] = Color3.fromRGB(55, 55, 73);
-
-
--- StarterGui.vxpe.zemainthing.gui.shadowHolder
-G2L["c"] = Instance.new("Frame", G2L["3"]);
-G2L["c"]["ZIndex"] = 0;
-G2L["c"]["Size"] = UDim2.new(1, 0, 1, 0);
-G2L["c"]["Name"] = [[shadowHolder]];
-G2L["c"]["BackgroundTransparency"] = 1;
-
-
--- StarterGui.vxpe.zemainthing.gui.shadowHolder.umbraShadow
-G2L["d"] = Instance.new("ImageLabel", G2L["c"]);
-G2L["d"]["ZIndex"] = 0;
-G2L["d"]["SliceCenter"] = Rect.new(10, 10, 118, 118);
-G2L["d"]["ScaleType"] = Enum.ScaleType.Slice;
-G2L["d"]["ImageTransparency"] = 0.86;
--- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
-G2L["d"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["d"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["d"]["Image"] = [[rbxassetid://1316045217]];
-G2L["d"]["Size"] = UDim2.new(1, 10, 1, 10);
-G2L["d"]["BackgroundTransparency"] = 1;
-G2L["d"]["Name"] = [[umbraShadow]];
-G2L["d"]["Position"] = UDim2.new(0.5, 0, 0.5, 6);
-
-
--- StarterGui.vxpe.zemainthing.gui.shadowHolder.penumbraShadow
-G2L["e"] = Instance.new("ImageLabel", G2L["c"]);
-G2L["e"]["ZIndex"] = 0;
-G2L["e"]["SliceCenter"] = Rect.new(10, 10, 118, 118);
-G2L["e"]["ScaleType"] = Enum.ScaleType.Slice;
-G2L["e"]["ImageTransparency"] = 0.88;
--- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
-G2L["e"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["e"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["e"]["Image"] = [[rbxassetid://1316045217]];
-G2L["e"]["Size"] = UDim2.new(1, 10, 1, 10);
-G2L["e"]["BackgroundTransparency"] = 1;
-G2L["e"]["Name"] = [[penumbraShadow]];
-G2L["e"]["Position"] = UDim2.new(0.5, 0, 0.5, 6);
-
-
--- StarterGui.vxpe.zemainthing.gui.shadowHolder.ambientShadow
-G2L["f"] = Instance.new("ImageLabel", G2L["c"]);
-G2L["f"]["ZIndex"] = 0;
-G2L["f"]["SliceCenter"] = Rect.new(10, 10, 118, 118);
-G2L["f"]["ScaleType"] = Enum.ScaleType.Slice;
-G2L["f"]["ImageTransparency"] = 0.88;
--- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
-G2L["f"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["f"]["Image"] = [[rbxassetid://1316045217]];
-G2L["f"]["Size"] = UDim2.new(1, 10, 1, 10);
-G2L["f"]["BackgroundTransparency"] = 1;
-G2L["f"]["Name"] = [[ambientShadow]];
-G2L["f"]["Position"] = UDim2.new(0.5, 0, 0.5, 6);
-
-
-
-return G2L["1"], require;
-
 
 run(function()
+
+	local G2L = {};
+
+	-- StarterGui.vxpe
+	G2L["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
+	G2L["1"]["Name"] = [[vxpe]];
+	G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+
+
+	-- StarterGui.vxpe.zemainthing
+	G2L["2"] = Instance.new("Frame", G2L["1"]);
+	G2L["2"]["BorderSizePixel"] = 0;
+	G2L["2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+	G2L["2"]["Size"] = UDim2.new(1, 0, 1, 0);
+	G2L["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["2"]["Name"] = [[zemainthing]];
+	G2L["2"]["BackgroundTransparency"] = 1;
+
+
+	-- StarterGui.vxpe.zemainthing.gui
+	G2L["3"] = Instance.new("Frame", G2L["2"]);
+	G2L["3"]["BorderSizePixel"] = 0;
+	G2L["3"]["BackgroundColor3"] = Color3.fromRGB(25, 25, 57);
+	G2L["3"]["Size"] = UDim2.new(0, 216, 0, 89);
+	G2L["3"]["Position"] = UDim2.new(0.28675, 0, 0.52555, 0);
+	G2L["3"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["3"]["Name"] = [[gui]];
+
+
+	-- StarterGui.vxpe.zemainthing.gui.Player
+	G2L["4"] = Instance.new("ImageLabel", G2L["3"]);
+	G2L["4"]["BorderSizePixel"] = 0;
+	G2L["4"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+	-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+	G2L["4"]["Image"] = [[rbxassetid://6877509129]];
+	G2L["4"]["Size"] = UDim2.new(0, 60, 0, 60);
+	G2L["4"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["4"]["BackgroundTransparency"] = 1;
+	G2L["4"]["Name"] = [[Player]];
+	G2L["4"]["Position"] = UDim2.new(0.0463, 0, 0.1573, 0);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.Hp
+	G2L["5"] = Instance.new("Frame", G2L["3"]);
+	G2L["5"]["BorderSizePixel"] = 0;
+	G2L["5"]["BackgroundColor3"] = Color3.fromRGB(0, 255, 18);
+	G2L["5"]["Size"] = UDim2.new(0, 129, 0, 15);
+	G2L["5"]["Position"] = UDim2.new(0.35648, 0, 0.59551, 0);
+	G2L["5"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["5"]["Name"] = [[Hp]];
+
+
+	-- StarterGui.vxpe.zemainthing.gui.Hp.UICorner
+	G2L["6"] = Instance.new("UICorner", G2L["5"]);
+
+
+
+	-- StarterGui.vxpe.zemainthing.gui.Hp.UIStroke
+	G2L["7"] = Instance.new("UIStroke", G2L["5"]);
+	G2L["7"]["Thickness"] = 2;
+	G2L["7"]["Color"] = Color3.fromRGB(65, 65, 81);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.Hp.UIStroke
+	G2L["8"] = Instance.new("UIStroke", G2L["5"]);
+	G2L["8"]["Thickness"] = 2;
+	G2L["8"]["Color"] = Color3.fromRGB(65, 65, 81);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.Username
+	G2L["9"] = Instance.new("TextLabel", G2L["3"]);
+	G2L["9"]["TextWrapped"] = true;
+	G2L["9"]["TextStrokeTransparency"] = 0;
+	G2L["9"]["BorderSizePixel"] = 0;
+	G2L["9"]["TextSize"] = 14;
+	G2L["9"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+	G2L["9"]["TextScaled"] = true;
+	G2L["9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+	G2L["9"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+	G2L["9"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+	G2L["9"]["BackgroundTransparency"] = 1;
+	G2L["9"]["Size"] = UDim2.new(0, 129, 0, 24);
+	G2L["9"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["9"]["Text"] = [[OnlyUnderTwenty]];
+	G2L["9"]["Name"] = [[Username]];
+	G2L["9"]["Position"] = UDim2.new(0.35648, 0, 0.22472, 0);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.UICorner
+	G2L["a"] = Instance.new("UICorner", G2L["3"]);
+
+
+
+	-- StarterGui.vxpe.zemainthing.gui.UIStroke
+	G2L["b"] = Instance.new("UIStroke", G2L["3"]);
+	G2L["b"]["Thickness"] = 2;
+	G2L["b"]["Color"] = Color3.fromRGB(55, 55, 73);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.shadowHolder
+	G2L["c"] = Instance.new("Frame", G2L["3"]);
+	G2L["c"]["ZIndex"] = 0;
+	G2L["c"]["Size"] = UDim2.new(1, 0, 1, 0);
+	G2L["c"]["Name"] = [[shadowHolder]];
+	G2L["c"]["BackgroundTransparency"] = 1;
+
+
+	-- StarterGui.vxpe.zemainthing.gui.shadowHolder.umbraShadow
+	G2L["d"] = Instance.new("ImageLabel", G2L["c"]);
+	G2L["d"]["ZIndex"] = 0;
+	G2L["d"]["SliceCenter"] = Rect.new(10, 10, 118, 118);
+	G2L["d"]["ScaleType"] = Enum.ScaleType.Slice;
+	G2L["d"]["ImageTransparency"] = 0.86;
+	-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+	G2L["d"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["d"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+	G2L["d"]["Image"] = [[rbxassetid://1316045217]];
+	G2L["d"]["Size"] = UDim2.new(1, 10, 1, 10);
+	G2L["d"]["BackgroundTransparency"] = 1;
+	G2L["d"]["Name"] = [[umbraShadow]];
+	G2L["d"]["Position"] = UDim2.new(0.5, 0, 0.5, 6);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.shadowHolder.penumbraShadow
+	G2L["e"] = Instance.new("ImageLabel", G2L["c"]);
+	G2L["e"]["ZIndex"] = 0;
+	G2L["e"]["SliceCenter"] = Rect.new(10, 10, 118, 118);
+	G2L["e"]["ScaleType"] = Enum.ScaleType.Slice;
+	G2L["e"]["ImageTransparency"] = 0.88;
+	-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+	G2L["e"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["e"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+	G2L["e"]["Image"] = [[rbxassetid://1316045217]];
+	G2L["e"]["Size"] = UDim2.new(1, 10, 1, 10);
+	G2L["e"]["BackgroundTransparency"] = 1;
+	G2L["e"]["Name"] = [[penumbraShadow]];
+	G2L["e"]["Position"] = UDim2.new(0.5, 0, 0.5, 6);
+
+
+	-- StarterGui.vxpe.zemainthing.gui.shadowHolder.ambientShadow
+	G2L["f"] = Instance.new("ImageLabel", G2L["c"]);
+	G2L["f"]["ZIndex"] = 0;
+	G2L["f"]["SliceCenter"] = Rect.new(10, 10, 118, 118);
+	G2L["f"]["ScaleType"] = Enum.ScaleType.Slice;
+	G2L["f"]["ImageTransparency"] = 0.88;
+	-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+	G2L["f"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+	G2L["f"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+	G2L["f"]["Image"] = [[rbxassetid://1316045217]];
+	G2L["f"]["Size"] = UDim2.new(1, 10, 1, 10);
+	G2L["f"]["BackgroundTransparency"] = 1;
+	G2L["f"]["Name"] = [[ambientShadow]];
+	G2L["f"]["Position"] = UDim2.new(0.5, 0, 0.5, 6);
+
+
+
+	return G2L["1"], require;
+
+
 	local targetinfo
 	local targetinfoobj
 	local targetinfobcolor
