@@ -8503,44 +8503,25 @@ end)
 
 
 
-
 run(function()
-    local TexturePacksV2 = {Enabled = false}
+    local TexturePacksV2
     local TexturePacksV2_Connections = {}
     local TexturePacksV2_GUI_Elements = {
-        Material = {Value = "Forcefield"},
+        Material = {Value = "ForceField"},
         Color = {Hue = 0, Sat = 0, Value = 0},
         GuiSync = {Enabled = false}
     }
 
     local function refreshChild(child, children)
-        if (not child) then return warn("[refreshChild]: invalid child!") end
-        if (not table.find(children, child)) then table.insert(children, child) end
-        if child.ClassName == "Accessory" then
-            for i, v in pairs(child:GetChildren()) do
-                if v.ClassName == "MeshPart" then
-                    --v.Material = Enum.Material[TexturePacksV2_GUI_Elements.Material.Value]
-					v.Material = Enum.Material.ForceField
+        if not child then return end
+        if not table.find(children, child) then table.insert(children, child) end
+        if child:IsA("Accessory") or child:IsA("Tool") then
+            for _, v in pairs(child:GetDescendants()) do
+                if v:IsA("BasePart") and not v:IsA("UnionOperation") then
+                    v.Material = Enum.Material.ForceField
                     if TexturePacksV2_GUI_Elements.GuiSync.Enabled and TexturePacksV2.Enabled then
-                        if shared.RiseMode and GuiLibrary.GUICoreColor and GuiLibrary.GUICoreColorChanged then
-                            v.Color = GuiLibrary.GUICoreColor
-							TexturePacksV2:Clean(GuiLibrary.GUICoreColorChanged.Event:Connect(function()
-                                if TexturePacksV2_GUI_Elements.GuiSync.Enabled then v.Color = GuiLibrary.GUICoreColor end
-                            end))
-                        else
-                            local color = vape.GUIColor
-                            v.Color = Color3.fromHSV(color.Hue, color.Sat, color.Value)
-							TexturePacksV2:Clean(runService.Heartbeat:Connect(function()
-								if TexturePacksV2_GUI_Elements.GuiSync.Enabled and TexturePacksV2.Enabled then
-                                    local color = vape.GUIColor
-                                    v.Color = Color3.fromHSV(color.Hue, color.Sat, color.Value)
-                                    if TexturePacksV2.Enabled then
-                                        color = {Hue = h, Sat = s, Value = v}
-                                        v.Color = Color3.fromHSV(color.Hue, color.Sat, color.Value)
-                                    end
-                                end
-							end))
-                        end
+                        local color = vape.GUIColor
+                        v.Color = Color3.fromHSV(color.Hue, color.Sat, color.Value)
                     else
                         v.Color = Color3.fromHSV(TexturePacksV2_GUI_Elements.Color.Hue, TexturePacksV2_GUI_Elements.Color.Sat, TexturePacksV2_GUI_Elements.Color.Value)
                     end
@@ -8550,51 +8531,62 @@ run(function()
     end
 
     local function refreshChildren()
-        local children = gameCamera and gameCamera:FindFirstChild("Viewmodel") and gameCamera:FindFirstChild("Viewmodel").ClassName and gameCamera:FindFirstChild("Viewmodel").ClassName == "Model" and gameCamera:FindFirstChild("Viewmodel"):GetChildren() or {}
-        for i, v in pairs(children) do refreshChild(v, children) end
+        local viewmodel = gameCamera:FindFirstChild("Viewmodel")
+        local children = {}
+        if viewmodel and viewmodel:IsA("Model") then
+            children = viewmodel:GetChildren()
+        end
+        for _, v in pairs(children) do
+            refreshChild(v, children)
+        end
     end
 
     TexturePacksV2 = vape.Categories.Render:CreateModule({
         Name = "FFSword",
-        Function = function(call)
-            if call then
-                task.spawn(function()
-                    repeat
+        Function = function(callback)
+            if callback then
+                TexturePacksV2:Clean(runService.Heartbeat:Connect(function()
+                    if TexturePacksV2.Enabled then
                         refreshChildren()
-                        task.wait()
-                    until (not TexturePacksV2.Enabled)
-                end)
+                    end
+                end))
             else
-                for i, v in pairs(TexturePacksV2_Connections) do
-                    pcall(function() v:Disconnect() end)
-                end
             end
-        end
+        end,
+        Tooltip = "Applies a ForceField material and color to your sword."
     })
 
     TexturePacksV2.Restart = function()
         if TexturePacksV2.Enabled then
-            TexturePacksV2:Toggle(false)
-            TexturePacksV2:Toggle(false)
+            TexturePacksV2:Toggle()
+            TexturePacksV2:Toggle()
         end
     end
 
     TexturePacksV2_GUI_Elements.Material = TexturePacksV2:CreateDropdown({
         Name = "Material",
-        Function = refreshChildren,
-        List = GetEnumItems("Material"),
-        Default = "Forcefield"
+        Function = function()
+            refreshChildren()
+        end,
+        List = {"ForceField"},
+        Default = "ForceField"
     })
-	TexturePacksV2_GUI_Elements.Material.Object.Visible = false
+    TexturePacksV2_GUI_Elements.Material.Object.Visible = false
 
     TexturePacksV2_GUI_Elements.Color = TexturePacksV2:CreateColorSlider({
         Name = "Color",
-        Function = refreshChildren
+        Function = function()
+            refreshChildren()
+        end
     })
 
     TexturePacksV2_GUI_Elements.GuiSync = TexturePacksV2:CreateToggle({
         Name = "GUI Color Sync",
-        Function = TexturePacksV2.Restart,
+        Function = function(callback)
+            TexturePacksV2_GUI_Elements.GuiSync.Enabled = callback
+            TexturePacksV2.Restart()
+        end,
         Default = true
     })
+
 end)
