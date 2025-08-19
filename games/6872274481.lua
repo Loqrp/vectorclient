@@ -8531,6 +8531,7 @@ run(function()
     end
 
     local function refreshChildren()
+		if not TexturePacksV2.Enabled then return end
         local viewmodel = gameCamera:FindFirstChild("Viewmodel")
         local children = {}
         if viewmodel and viewmodel:IsA("Model") then
