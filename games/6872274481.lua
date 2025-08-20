@@ -8618,3 +8618,74 @@ run(function()
     })
 
 end)
+
+run(function()
+    local Watermark
+    local watermarkElement
+
+    Watermark = vape.Categories.Render:CreateModule({
+        Name = "Watermark",
+        Function = function(callback)
+            if callback then
+                local watermark = Instance.new("ScreenGui")
+                watermark.Name = "Watermark"
+                watermark.ResetOnSpawn = false
+                watermark.Parent = vape.gui
+
+                local mainframe = Instance.new("Frame")
+                mainframe.Name = "mainframe"
+                mainframe.BackgroundTransparency = 1.000
+                mainframe.Size = UDim2.new(1, 0, 1, 0)
+                mainframe.Parent = watermark
+
+                local holder1 = Instance.new("Frame")
+                holder1.Name = "holder1"
+                holder1.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                holder1.BorderSizePixel = 0
+                holder1.Position = UDim2.new(0.0172727276, 0, 0.925547421, 0)
+                holder1.Size = UDim2.new(0, 186, 0, 35)
+                holder1.Parent = mainframe
+
+                local UICorner = Instance.new("UICorner")
+                UICorner.CornerRadius = UDim.new(0, 5)
+                UICorner.Parent = holder1
+
+                local coolline = Instance.new("Frame")
+                coolline.Name = "coolline"
+                coolline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                coolline.BorderSizePixel = 0
+                coolline.Position = UDim2.new(-0.000999999349, 0, 0.200000003, 0)
+                coolline.Size = UDim2.new(0, 4, 0, 20)
+                coolline.Parent = holder1
+
+                local UICorner_2 = Instance.new("UICorner")
+                UICorner_2.CornerRadius = UDim.new(0, 5)
+                UICorner_2.Parent = coolline
+
+                local text = Instance.new("TextLabel")
+                text.Name = "text"
+                text.BackgroundTransparency = 1.000
+                text.BorderSizePixel = 0
+                text.Position = UDim2.new(3.50000381, 0, 0, 0)
+                text.Size = UDim2.new(0, 186, 0, 20)
+                text.Font = Enum.Font.TitilliumWeb
+                text.Text = "Vector | .gg/WXP9P6Mh6w"
+                text.TextColor3 = Color3.fromRGB(248, 248, 248)
+                text.TextScaled = true
+                text.TextSize = 14.000
+                text.TextWrapped = true
+                text.TextXAlignment = Enum.TextXAlignment.Left
+                text.Parent = coolline
+
+                watermarkElement = watermark
+            else
+                if watermarkElement then
+                    pcall(function() watermarkElement:Destroy() end)
+                    watermarkElement = nil
+                end
+            end
+        end,
+        Tooltip = "Displays a watermark"
+    })
+
+end)
