@@ -8686,15 +8686,6 @@ run(function()
                 end
             end
         end,
-        Tooltip = "Displays a watermark"
-		LineColor = NameTags:CreateColorSlider({
-			Name = 'Line Color',
-			Function = function(hue, sat, val, opacity)
-				if Watermark.Enabled then
-					coolline.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-				end
-			end
-		})
     })
 
 end)
