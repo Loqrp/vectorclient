@@ -8622,6 +8622,7 @@ end)
 run(function()
     local Watermark
     local watermarkElement
+	local LineColor
 
     Watermark = vape.Categories.Render:CreateModule({
         Name = "Watermark",
@@ -8686,7 +8687,7 @@ run(function()
             end
         end,
         Tooltip = "Displays a watermark"
-		Color = NameTags:CreateColorSlider({
+		LineColor = NameTags:CreateColorSlider({
 			Name = 'Line Color',
 			Function = function(hue, sat, val, opacity)
 				if Watermark.Enabled then
