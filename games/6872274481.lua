@@ -8686,6 +8686,7 @@ run(function()
                 end
             end
         end,
+        Tooltip = "Displays a watermark"
     })
 
 end)
