@@ -7556,12 +7556,20 @@ run(function()
 						if ResizeMode.Value == Resize then
 							local originalSize = key.Key.Size
 							local originalPosition = key.Key.Position
+							local originalAnchorPoint = key.Key.AnchorPoint
+
+							key.OriginalSize = originalSize
+							key.OriginalPosition = originalPosition
+							key.OriginalAnchorPoint = originalAnchorPoint
+
 							key.Key.Size = UDim2.new(0, 0, 0, 0)
 							key.Key.Position = UDim2.new(0.5, 0, 0.5, 0)
+							key.Key.AnchorPoint = Vector2.new(0.5, 0.5)
 							
 							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
 								Size = originalSize,
-								Position = originalPosition
+								Position = originalPosition,
+								AnchorPoint = originalAnchorPoint
 							})
 							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
 								TextColor3 = Color3.new()
@@ -7594,14 +7602,18 @@ run(function()
 	
 						key.Pressed = false
 						if ResizeMode.Value == Resize then
-							local originalSize = key.Key.Size
-							local originalPosition = key.Key.Position
+							local originalSize = key.OriginalSize or key.Key.Size
+							local originalPosition = key.OriginalPosition or key.Key.Position
+							local originalAnchorPoint = key.OriginalAnchorPoint or key.Key.AnchorPoint
+							
 							key.Key.Size = UDim2.new(0, 0, 0, 0)
 							key.Key.Position = UDim2.new(0.5, 0, 0.5, 0)
+							key.Key.AnchorPoint = Vector2.new(0.5, 0.5)
 							
 							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
 								Size = originalSize,
-								Position = originalPosition
+								Position = originalPosition,
+								AnchorPoint = originalAnchorPoint
 							})
 							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
 								TextColor3 = Color3.new(1, 1, 1)
