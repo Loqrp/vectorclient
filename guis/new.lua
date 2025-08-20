@@ -6032,6 +6032,67 @@ scaleslider = guipane:CreateSlider({
 	Visible = false
 })
 
+ImageToggle.Function = function(callback)
+    ImageIDField.Object.Visible = callback
+    if callback then
+        if not ImageElement then
+            ImageElement = Instance.new("ImageLabel")
+            ImageElement.Name = "VapeImage"
+            ImageElement.Size = UDim2.fromOffset(250, 250)
+            ImageElement.Position = UDim2.new(1, -250, 1, -250)
+            ImageElement.BackgroundTransparency = 1
+            ImageElement.Image = ImageIDField.Text or ""
+            ImageElement.Parent = mainapi.gui.ScaledGui.ClickGui
+        else
+            ImageElement.Visible = true
+        end
+    else
+        if ImageElement then
+            ImageElement.Visible = false
+        end
+    end
+end
+
+
+ImageToggle = guipane:CreateToggle({
+    Name = "CornerImage",
+    Function = function(callback)
+        if callback then	
+            if not ImageElement then
+                ImageElement = Instance.new("ImageLabel")
+                ImageElement.Name = "Image"
+                ImageElement.Size = UDim2.fromOffset(250, 250)
+                ImageElement.Position = UDim2.new(1, -250, 1, -250) 
+                ImageElement.BackgroundTransparency = 1
+                ImageElement.Image = ImageIDField and ImageIDField.Text or ""
+                ImageElement.Parent = mainapi.gui.ScaledGui.ClickGui
+            else
+                ImageElement.Visible = true
+            end
+        else
+            if ImageElement then
+                ImageElement.Visible = false
+            end
+        end
+    end,
+    Default = false,
+    Tooltip = "cool image on the right bottom corner"
+})
+
+
+
+ImageIDField = guipane:CreateTextBox({
+    Name = "Image ID",
+    Function = function(text)
+        if ImageElement and ImageElement.Parent then
+            ImageElement.Image = text
+        end
+    end,
+    Placeholder = "Enter rbxassetid",
+    Visible = false,
+    Darker = true
+})
+
 guipane:CreateDropdown({
 	Name = 'GUI Theme',
 	List = inputService.TouchEnabled and {'new', 'old'} or {'new', 'old', 'rise'},
@@ -7022,3 +7083,5 @@ mainapi:Clean(inputService.InputEnded:Connect(function(inputObj)
 end))
 
 return mainapi
+
+ImageIDField.Object.Visible = ImageToggle.Enabled
