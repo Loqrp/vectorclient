@@ -7553,15 +7553,11 @@ run(function()
 						end
 	
 						key.Pressed = true
-						if ResizeMode.Value == Resize then
+						if ResizeMode.Value == 'Resize' then
 							local originalSize = key.Key.Size
 							local originalPosition = key.Key.Position
 							local originalAnchorPoint = key.Key.AnchorPoint
-
-							key.OriginalSize = originalSize
-							key.OriginalPosition = originalPosition
-							key.OriginalAnchorPoint = originalAnchorPoint
-
+							
 							key.Key.Size = UDim2.new(0, 0, 0, 0)
 							key.Key.Position = UDim2.new(0.5, 0, 0.5, 0)
 							key.Key.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -7601,10 +7597,10 @@ run(function()
 						end
 	
 						key.Pressed = false
-						if ResizeMode.Value == Resize then
-							local originalSize = key.OriginalSize or key.Key.Size
-							local originalPosition = key.OriginalPosition or key.Key.Position
-							local originalAnchorPoint = key.OriginalAnchorPoint or key.Key.AnchorPoint
+						if ResizeMode.Value == 'Resize' then
+							local originalSize = key.Key.Size
+							local originalPosition = key.Key.Position
+							local originalAnchorPoint = key.Key.AnchorPoint
 							
 							key.Key.Size = UDim2.new(0, 0, 0, 0)
 							key.Key.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -7652,6 +7648,17 @@ run(function()
 			end
 		end
 	})
+	ResizeMode = Keystrokes:CreateDropdown({
+		Name = 'Animation Mode',
+		List = {'Fade', 'Resize'},
+		Default = 'Fade',
+		Function = function()
+			if Keystrokes.Enabled then
+				Keystrokes:Toggle()
+				Keystrokes:Toggle()
+			end
+		end
+	})
 	Color = Keystrokes:CreateColorSlider({
 		Name = 'Color',
 		DefaultValue = 0,
@@ -7677,17 +7684,6 @@ run(function()
 			end
 		end,
 		Default = true
-	})
-	ResizeMode = Keystrokes:CreateDropdown({
-    Name = 'Animation Mode',
-    List = {'Fade', 'Resize'},
-    Default = 'Fade',
-    Function = function()
-        if Keystrokes.Enabled then
-            Keystrokes:Toggle()
-            Keystrokes:Toggle()
-        end
-    end
 	})
 end)
 	
