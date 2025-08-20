@@ -7604,17 +7604,17 @@ run(function()
 								Position = originalPosition
 							})
 							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-								TextColor3 = Color3.new()
+								TextColor3 = Color3.new(1, 1, 1)
 							})
 							key.Tween:Play()
 							key.Tween2:Play()
 						else
 							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-								BackgroundColor3 = Color3.new(1, 1, 1), 
-								BackgroundTransparency = 0
+								BackgroundColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value), 
+								BackgroundTransparency = 1 - Color.Opacity
 							})
 							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-								TextColor3 = Color3.new()
+								TextColor3 = Color3.new(1, 1, 1)
 							})
 							key.Tween:Play()
 							key.Tween2:Play()
@@ -7631,7 +7631,7 @@ run(function()
 	holder.BackgroundTransparency = 1
 	holder.Parent = Keystrokes.Children
 	Style = Keystrokes:CreateDropdown({
-		Name = 'Animation Type',
+		Name = 'Key Style',
 		List = {'Keyboard', 'Arrow'},
 		Function = function()
 			if Keystrokes.Enabled then
