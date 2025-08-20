@@ -8553,7 +8553,7 @@ run(function()
             else
             end
         end,
-        Tooltip = "Applies a ForceField material and color to your sword."
+        Tooltip = "Applies a ForceField material and color to your sword"
     })
 
     TexturePacksV2.Restart = function()
