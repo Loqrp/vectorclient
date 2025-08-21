@@ -7501,7 +7501,6 @@ run(function()
 	local Keystrokes
 	local Style
 	local Color
-	local ResizeMode
 	local keys, holder = {}
 	
 	local function createKeystroke(keybutton, pos, pos2, text)
@@ -7553,36 +7552,15 @@ run(function()
 						end
 	
 						key.Pressed = true
-						if ResizeMode.Value == 'Resize' then
-							local originalSize = key.Key.Size
-							local originalPosition = key.Key.Position
-							local originalAnchorPoint = key.Key.AnchorPoint
-							
-							key.Key.Size = UDim2.new(0, 0, 0, 0)
-							key.Key.Position = UDim2.new(0.5, 0, 0.5, 0)
-							key.Key.AnchorPoint = Vector2.new(0.5, 0.5)
-							
-							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-								Size = originalSize,
-								Position = originalPosition,
-								AnchorPoint = originalAnchorPoint
-							})
-							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-								TextColor3 = Color3.new()
-							})
-							key.Tween:Play()
-							key.Tween2:Play()
-						else
-							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-								BackgroundColor3 = Color3.new(1, 1, 1), 
-								BackgroundTransparency = 0
-							})
-							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-								TextColor3 = Color3.new()
-							})
-							key.Tween:Play()
-							key.Tween2:Play()
-						end
+						key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
+							BackgroundColor3 = Color3.new(1, 1, 1), 
+							BackgroundTransparency = 0
+						})
+						key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
+							TextColor3 = Color3.new()
+						})
+						key.Tween:Play()
+						key.Tween2:Play()
 					end
 				end))
 	
@@ -7597,36 +7575,15 @@ run(function()
 						end
 	
 						key.Pressed = false
-						if ResizeMode.Value == 'Resize' then
-							local originalSize = key.Key.Size
-							local originalPosition = key.Key.Position
-							local originalAnchorPoint = key.Key.AnchorPoint
-							
-							key.Key.Size = UDim2.new(0, 0, 0, 0)
-							key.Key.Position = UDim2.new(0.5, 0, 0.5, 0)
-							key.Key.AnchorPoint = Vector2.new(0.5, 0.5)
-							
-							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-								Size = originalSize,
-								Position = originalPosition,
-								AnchorPoint = originalAnchorPoint
-							})
-							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-								TextColor3 = Color3.new(1, 1, 1)
-							})
-							key.Tween:Play()
-							key.Tween2:Play()
-						else
-							key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
-								BackgroundColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value), 
-								BackgroundTransparency = 1 - Color.Opacity
-							})
-							key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
-								TextColor3 = Color3.new(1, 1, 1)
-							})
-							key.Tween:Play()
-							key.Tween2:Play()
-						end
+						key.Tween = tweenService:Create(key.Key, TweenInfo.new(0.1), {
+							BackgroundColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value), 
+							BackgroundTransparency = 1 - Color.Opacity
+						})
+						key.Tween2 = tweenService:Create(key.Key.TextLabel, TweenInfo.new(0.1), {
+							TextColor3 = Color3.new(1, 1, 1)
+						})
+						key.Tween:Play()
+						key.Tween2:Play()
 					end
 				end))
 			end
@@ -7641,17 +7598,6 @@ run(function()
 	Style = Keystrokes:CreateDropdown({
 		Name = 'Key Style',
 		List = {'Keyboard', 'Arrow'},
-		Function = function()
-			if Keystrokes.Enabled then
-				Keystrokes:Toggle()
-				Keystrokes:Toggle()
-			end
-		end
-	})
-	ResizeMode = Keystrokes:CreateDropdown({
-		Name = 'Animation Mode',
-		List = {'Fade', 'Resize'},
-		Default = 'Fade',
 		Function = function()
 			if Keystrokes.Enabled then
 				Keystrokes:Toggle()
