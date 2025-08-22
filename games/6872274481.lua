@@ -8690,3 +8690,201 @@ run(function()
     })
 
 end)
+
+run(function()
+    local OpalWatermarkModule
+    local watermarkElement
+    local pingTextLabel
+
+    OpalWatermarkModule = vape.Categories.Render:CreateModule({
+        Name = "OpalWatermark",
+        Function = function(callback)
+            if callback then
+                local screenGui = Instance.new("ScreenGui")
+                screenGui.Name = "OpalWatermarkGUI"
+                screenGui.ResetOnSpawn = false
+                pcall(function()
+                    screenGui.Parent = game:GetService("CoreGui")
+                end)
+                if not screenGui.Parent then
+                    screenGui.Parent = vape.gui
+                end
+                OpalWatermarkModule:Clean(function() pcall(function() screenGui:Destroy() end) end) -- Ensure cleanup
+
+                local centering = Instance.new("Frame")
+                centering.Name = "centering"
+                centering.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                centering.BackgroundTransparency = 1.000
+                centering.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                centering.BorderSizePixel = 0
+                centering.Size = UDim2.new(1, 0, 1, 0)
+                centering.Parent = screenGui
+
+                local watermark = Instance.new("Frame")
+                watermark.Name = "watermark"
+                watermark.Parent = centering
+                watermark.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+                watermark.BackgroundTransparency = 0.500
+                watermark.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                watermark.BorderSizePixel = 0
+                watermark.Position = UDim2.new(0.365978926, 0, 0.0189781021, 0) 
+                watermark.Size = UDim2.new(0, 268, 0, 51)
+                watermarkElement = watermark
+
+                local uiCorner = Instance.new("UICorner")
+                uiCorner.CornerRadius = UDim.new(0, 30)
+                uiCorner.Parent = watermark
+
+                local imageLabel = Instance.new("ImageLabel")
+                imageLabel.Parent = watermark
+                imageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                imageLabel.BackgroundTransparency = 1.000
+                imageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                imageLabel.BorderSizePixel = 0
+                imageLabel.Position = UDim2.new(0.0384088755, 0, 0.137254909, 0)
+                imageLabel.Size = UDim2.new(0, 36, 0, 36)
+                imageLabel.Image = "rbxassetid://87053748263177"
+                imageLabel.ImageColor3 = Color3.fromRGB(0, 166, 255)
+
+                local opal = Instance.new("TextLabel")
+                opal.Name = "opal"
+                opal.Parent = imageLabel
+                opal.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                opal.BackgroundTransparency = 1.000
+                opal.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                opal.BorderSizePixel = 0
+                opal.Position = UDim2.new(1.16666579, 0, 0.277777791, 0)
+                opal.Size = UDim2.new(0, 57, 0, 16)
+                opal.Font = Enum.Font.GothamBold
+                opal.Text = "opal"
+                opal.TextColor3 = Color3.fromRGB(255, 255, 255)
+                opal.TextSize = 26.000
+
+                local uiGradient = Instance.new("UIGradient")
+                uiGradient.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 115, 172)),
+                    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 166, 255))
+                }
+                uiGradient.Parent = opal
+
+                local line1 = Instance.new("Frame")
+                line1.Name = "line1"
+                line1.Parent = watermark
+                line1.AnchorPoint = Vector2.new(0.5, 0.5)
+                line1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                line1.BackgroundTransparency = 0.500
+                line1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                line1.BorderSizePixel = 0
+                line1.Position = UDim2.new(0.440298498, 0, 0.490196079, 0)
+                line1.Size = UDim2.new(0, -2, 0, 16)
+
+                local line2 = Instance.new("Frame")
+                line2.Name = "line2"
+                line2.Parent = watermark
+                line2.AnchorPoint = Vector2.new(0.5, 0.5)
+                line2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                line2.BackgroundTransparency = 0.500
+                line2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                line2.BorderSizePixel = 0
+                line2.Position = UDim2.new(0.625, 0, 0.490196079, 0)
+                line2.Size = UDim2.new(0, -2, 0, 16)
+
+                local branch = Instance.new("TextLabel")
+                branch.Name = "branch"
+                branch.Parent = watermark
+                branch.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                branch.BackgroundTransparency = 1.000
+                branch.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                branch.BorderSizePixel = 0
+                branch.Position = UDim2.new(0.469999999, 0, 0, 0)
+                branch.Size = UDim2.new(0, 47, 0, 33)
+                branch.Font = Enum.Font.GothamBold
+                branch.Text = "beta"
+                branch.TextColor3 = Color3.fromRGB(255, 255, 255)
+                branch.TextSize = 16.000
+                branch.TextXAlignment = Enum.TextXAlignment.Left
+
+                local ver = Instance.new("TextLabel")
+                ver.Name = "ver"
+                ver.Parent = watermark
+                ver.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                ver.BackgroundTransparency = 1.000
+                ver.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                ver.BorderSizePixel = 0
+                ver.Position = UDim2.new(0.469999999, 0, 0, 0)
+                ver.Size = UDim2.new(0, 47, 0, 62)
+                ver.Font = Enum.Font.GothamBold
+                ver.Text = "v1.0"
+                ver.TextColor3 = Color3.fromRGB(255, 255, 255)
+                ver.TextSize = 16.000
+                ver.TextTransparency = 0.500
+                ver.TextWrapped = true
+                ver.TextXAlignment = Enum.TextXAlignment.Left
+
+                local gameLabel = Instance.new("TextLabel") 
+                gameLabel.Name = "game"
+                gameLabel.Parent = watermark
+                gameLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                gameLabel.BackgroundTransparency = 1.000
+                gameLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                gameLabel.BorderSizePixel = 0
+                gameLabel.Position = UDim2.new(0.667761266, 0, 0, 0)
+                gameLabel.Size = UDim2.new(0, 89, 0, 33)
+                gameLabel.Font = Enum.Font.GothamBold
+                gameLabel.Text = "Bedwars" 
+                gameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                gameLabel.TextSize = 16.000
+                gameLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+                pingTextLabel = Instance.new("TextLabel") 
+                pingTextLabel.Name = "ping"
+                pingTextLabel.Parent = watermark
+                pingTextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                pingTextLabel.BackgroundTransparency = 1.000
+                pingTextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                pingTextLabel.BorderSizePixel = 0
+                pingTextLabel.Position = UDim2.new(0.667761266, 0, 0, 0)
+                pingTextLabel.Size = UDim2.new(0, 89, 0, 62)
+                pingTextLabel.Font = Enum.Font.GothamBold
+                pingTextLabel.Text = "0 ms" 
+                pingTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                pingTextLabel.TextSize = 16.000
+                pingTextLabel.TextTransparency = 0.500
+                pingTextLabel.TextWrapped = true
+                pingTextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+
+                local pingConnection
+                local function updatePing()
+                    local stats = game:GetService("Stats"):FindFirstChild("PerformanceStats")
+                    if stats then
+                        local pingStat = stats:FindFirstChild("Data Ping")
+                        if pingStat then
+                            local pingValue = pingStat:GetValue()
+                            if type(pingValue) == "number" then
+                                pingTextLabel.Text = tostring(math.floor(pingValue + 0.5)) .. " ms" 
+                                return
+                            end
+                        end
+                    end
+                    local playerPing = playersService.LocalPlayer and playersService.LocalPlayer:GetNetworkPing()
+                    if playerPing and type(playerPing) == "number" and playerPing > 0 then
+                         pingTextLabel.Text = tostring(math.floor(playerPing * 1000 + 0.5)) .. " ms"
+                    else
+                         pingTextLabel.Text = "? ms"
+                    end
+                end
+
+            
+                updatePing()
+                pingConnection = runService.Heartbeat:Connect(updatePing)
+                OpalWatermarkModule:Clean(function() if pingConnection then pcall(function() pingConnection:Disconnect() end) pingConnection = nil end end)
+
+            else
+                watermarkElement = nil
+                pingTextLabel = nil
+            end
+        end,
+        Tooltip = "eee"
+    })
+end)
