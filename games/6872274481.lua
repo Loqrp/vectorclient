@@ -8799,7 +8799,7 @@ run(function()
                 branch.Position = UDim2.new(0.469999999, 0, 0, 0)
                 branch.Size = UDim2.new(0, 47, 0, 33)
                 branch.Font = Enum.Font.GothamBold
-                branch.Text = "beta"
+                branch.Text = "free"
                 branch.TextColor3 = Color3.fromRGB(255, 255, 255)
                 branch.TextSize = 16.000
                 branch.TextXAlignment = Enum.TextXAlignment.Left
